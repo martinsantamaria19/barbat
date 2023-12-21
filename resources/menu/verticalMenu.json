@@ -1,0 +1,106 @@
+{
+  "menu": [
+    {
+      "url": "/",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons bx bx-home-circle",
+      "slug": "pages-home"
+    },
+    {
+      "url": "/products",
+      "name": "Productos",
+      "icon": "menu-icon tf-icons bx bx-package",
+      "slug": ["products", "product-categories", "add-product"],
+      "submenu": [
+        {
+          "url": "/product-categories",
+          "name": "Categorías",
+          "slug": "product-categories"
+        },
+        {
+          "url": "/products",
+          "name": "Todos los Productos",
+          "slug": "products"
+        },
+        {
+          "url": "/add-product",
+          "name": "Crear Producto",
+          "slug": "add-product"
+        }
+      ]
+    },
+    {
+      "url": "/activity",
+      "name": "Envios",
+      "icon": "menu-icon tf-icons bx bx-git-compare",
+      "slug": ["activity", "add-package", "packages"],
+      "submenu": [
+        {
+          "url": "/packages",
+          "name": "Todos los envíos",
+          "slug": "packages"
+        },
+        {
+          "url": "/add-package",
+          "name": "Crear Envío",
+          "slug": "add-package"
+        },
+        {
+          "url": "/activity",
+          "name": "Ver Actividad",
+          "slug": "activity"
+        }
+      ]
+    },
+    {
+      "url": "/clients",
+      "name": "Clientes",
+      "icon": "menu-icon tf-icons bx bx-user",
+      "slug": ["clients", "branches"],
+      "submenu": [
+        {
+          "url": "/clients",
+          "name": "Clientes",
+          "slug": "clients"
+        },
+        {
+          "url": "branches",
+          "name": "Sucursales",
+          "slug": "branches"
+        }
+      ]
+    },
+    {
+      "url": "",
+      "name": "Usuarios",
+      "icon": "menu-icon tf-icons bx bx-group",
+      "slug": ["users", "roles"],
+      "submenu": [
+        {
+          "url": "/users",
+          "name": "Usuarios",
+          "slug": "users"
+        },
+        {
+          "url": "/roles",
+          "name": "Roles de Usuario",
+          "slug": "roles"
+        }
+      ]
+    },
+    {
+      "url": "/settings",
+      "name": "Ajustes",
+      "icon": "menu-icon tf-icons bx bx-dots-horizontal-rounded",
+      "slug": "settings",
+      "submenu": [
+        {
+          "url": "/settings",
+          "name": "Configuración",
+          "slug": "settings"
+        }
+      ]
+    }
+
+  ]
+}
