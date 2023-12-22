@@ -173,6 +173,8 @@ return [
         App\Providers\JetstreamServiceProvider::class,
     App\Providers\MenuServiceProvider::class,
     SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+    Spatie\Permission\PermissionServiceProvider::class,
+
   ])->toArray(),
 
   /*
@@ -190,6 +192,8 @@ return [
     // 'Example' => App\Facades\Example::class,
     'Helper' => App\Helpers\Helpers::class,
     'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+    'Permission' => Spatie\Permission\Models\Permission::class,
+
   ])->toArray(),
 
 ];

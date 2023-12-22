@@ -22,4 +22,4 @@
 <!-- Page Styles -->
 @yield('page-style')
 
-@livewireStyles
+

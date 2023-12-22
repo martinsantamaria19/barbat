@@ -10,13 +10,15 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasProfilePhoto, HasTeams, Notifiable, TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, HasProfilePhoto, HasTeams, Notifiable, TwoFactorAuthenticatable, HasRoles;
 
     protected $fillable = [
-        'name', 'email', 'password', 'role_id', 'company',
+        'name', 'email', 'password', 'company',
     ];
 
     protected $hidden = [
@@ -31,8 +33,5 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function role()
-    {
-        return $this->belongsTo(Role::class, 'role_id');
-    }
+
 }

@@ -79,7 +79,7 @@ $configData = Helper::appClasses();
 </div>
 
 <div class="col-12">
-  <!-- Line Area Chart -->
+  {{-- <!-- Line Area Chart -->
   <div class="col-12 mb-4">
     <div class="card">
       <div class="card-header d-flex justify-content-between">
@@ -106,14 +106,12 @@ $configData = Helper::appClasses();
       </div>
     </div>
   </div>
-  <!-- /Line Area Chart -->
+  <!-- /Line Area Chart --> --}}
 </div>
 
 <!-- Third Row -->
-<div class="row justify-content-between">
-
   <!-- Últimos movimientos -->
-  <div class="col-md-6 col-12 mb-4 card-left">
+  <div class="col-12 mb-4 card-left">
     <div class="card">
       <div class="card-header d-flex align-items-center justify-content-between pb-0">
         <div class="card-title mb-0">
@@ -125,7 +123,7 @@ $configData = Helper::appClasses();
         </div>
         <ul class="p-0 m-0">
           @foreach($latestActivities as $activity)
-          <li class="d-flex mb-4 pb-1">
+          <li class="d-flex mb-4 pb-1 border-bottom">
             <div class="avatar flex-shrink-0 me-3">
               @switch($activity->status)
                 @case('delivered')
@@ -186,7 +184,7 @@ $configData = Helper::appClasses();
   </div>
   <!--/ Últimos movimientos -->
   <!-- Clientes más activos -->
-  <div class="col-md-6 col-12 order-0 mb-4">
+  <div class="col-md-12 col-12 order-0 mb-4">
   <div class="card">
     <h5 class="card-header">Clientes más activos</h5>
     <div class="table-responsive text-nowrap">
@@ -213,7 +211,6 @@ $configData = Helper::appClasses();
     </div>
   </div>
   <!--/ End Clientes más activos -->
-  </div>
 </div>
 
 <!-- End Third Row -->

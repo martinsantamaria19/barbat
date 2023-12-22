@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/dropzone/dropzone.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/tagify/tagify.css')}}" />
+
+
 @endsection
 
 @section('vendor-script')
@@ -27,6 +29,8 @@
 @endsection
 
 @section('content')
+
+@can('edit products')
 
 @if(session('success'))
   <div class="alert alert-primary d-flex" role="alert">
@@ -106,7 +110,7 @@
             <div class="fallback">
               <input name="file" type="file" id="fileInput" style="display: none;" /> <!-- Con ID agregado -->
             </div>
-            <img id="imagePreview" src="{{ $product->image }}" alt="Vista previa de la imagen" style="width: 100px;" />
+            <img id="imagePreview" src="{{ asset('' . $product->image) }}" alt="Vista previa de la imagen" style="width: 100px;" />
           </form>
         </div>
       </div>
@@ -358,5 +362,10 @@ document.getElementById('editProductForm').addEventListener('submit', function(e
   toggleStockInput();
 </script>
 
+@else
+
+  @extends('layouts/not-authorized')
+
+@endcan
 
 @endsection

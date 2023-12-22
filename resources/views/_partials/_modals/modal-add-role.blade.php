@@ -1,3 +1,19 @@
+@php
+$permissionNamesMap = [
+    'view products'   => 'Ver productos',
+    'create products' => 'Crear productos',
+    'edit products'   => 'Editar productos',
+    'delete products' => 'Eliminar productos',
+    'view clients'    => 'Ver clientes',
+    'create clients'  => 'Crear clientes',
+    'edit clients'    => 'Editar clientes',
+    'delete clients'  => 'Eliminar clientes',
+    'view branches'     => 'Ver sucursales',
+    'view roles'      => 'Ver roles',
+    'view users'      => 'Ver usuarios',
+];
+@endphp
+
 <!-- Add Role Modal -->
 <div class="modal fade" id="addRoleModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-simple modal-dialog-centered modal-add-new-role">
@@ -22,17 +38,20 @@
               <table class="table table-flush-spacing">
                 <tbody>
                   @foreach($permissions as $permission)
-                    <tr>
-                      <td class="text-nowrap fw-medium">{{ $permission->name }}</td>
-                      <td>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="permission_{{ $permission->id }}" name="permissions[]" value="{{ $permission->id }}" />
-                          <label class="form-check-label" for="permission_{{ $permission->id }}">
-                            {{ ucfirst($permission->name) }}
-                          </label>
-                        </div>
-                      </td>
-                    </tr>
+                  <tr>
+                    <td class="text-nowrap fw-medium">
+                      {{ $permissionNamesMap[$permission->name] ?? $permission->name }}
+                    </td>
+                    <td>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch"
+                              id="permission_{{ $permission->id }}"
+                              name="permissions[]"
+                              value="{{ $permission->id }}">
+                        <label class="form-check-label" for="permission_{{ $permission->id }}"></label>
+                      </div>
+                    </td>
+                  </tr>
                   @endforeach
                 </tbody>
               </table>

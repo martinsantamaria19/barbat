@@ -54,8 +54,6 @@ class PackageController extends Controller
     }
   }
 
-
-
   public function create()
   {
       $clients = Client::with('branches')->get();

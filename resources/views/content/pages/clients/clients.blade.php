@@ -31,6 +31,9 @@
 
 @section('content')
 
+@can('view clients')
+
+
 @if(session('success'))
   <div class="alert alert-primary d-flex" role="alert">
     <span class="badge badge-center rounded-pill bg-primary border-label-primary p-3 me-2"><i class="bx bx-user fs-6"></i></span>
@@ -253,6 +256,20 @@
   </div>
 </div>
 
+@else
 
+<!-- Mensaje de no autorizado -->
+
+<link rel="stylesheet" href="{{asset('assets/vendor/css/pages/page-misc.css')}}">
+
+<div class="container-xxl container-p-y">
+  <div class="misc-wrapper">
+    <h2 class="mb-2 ">¡No estás autorizado!</h2>
+    <p class="mb-4 ">No tienes permiso para acceder aquí con el usuario que has iniciado sesión</p>
+    <a href="{{url('/')}}" class="btn btn-primary">Regresar al inicio</a>
+  </div>
+</div>
+
+@endcan
 
 @endsection

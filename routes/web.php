@@ -114,6 +114,8 @@ Route::middleware('auth')->group(function () {
   // Activity
   Route::get('/package/{packageId}/activities', [ActivityController::class, 'showActivities'])->name('activities.show');
   Route::post('/activities/store', [ActivityController::class, 'store'])->name('activities.store');
+  Route::get('/activities/delivered-data', 'ActivityController@getDeliveredActivitiesData');
+
 
 
   // Settings - Roles and Permissions
@@ -121,6 +123,9 @@ Route::middleware('auth')->group(function () {
   Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
   Route::put('/roles/{id}/update', [RoleController::class, 'update'])->name('roles.update');
   Route::post('/create-role', [RoleController::class, 'store'])->name('role.store');
+  Route::delete('roles/{id}/delete', 'RoleController@destroy')->name('roles.destroy');
+  Route::resource('permissions', PermissionController::class);
+
 
 
   // Dashboard and Profile Routes (Jetstream Routes)

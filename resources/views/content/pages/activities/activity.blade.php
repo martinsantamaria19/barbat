@@ -22,7 +22,7 @@
 
 <!-- Últimos movimientos -->
 <div class="row justify-content-center">
-  <div class="col-6 mb-4 card-left">
+  <div class="col-12 mb-4 card-left">
     <div class="card">
       <div class="card-header d-flex align-items-center justify-content-between pb-0">
         <div class="card-title mb-0">
@@ -34,7 +34,7 @@
         </div>
         <ul class="p-0 m-0">
           @foreach($latestActivities as $activity)
-          <li class="d-flex mb-4 pb-1">
+          <li class="d-flex mb-4 pb-1 border-bottom">
             <div class="avatar flex-shrink-0 me-3">
               @switch($activity->status)
                 @case('delivered')

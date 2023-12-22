@@ -11,16 +11,25 @@ use Illuminate\Support\Facades\Validator;
 
 
 
+
 class ProductController extends Controller
 {
   public function index()
   {
-    return view('content.pages.products.products');
+      // Obtén los productos
+      $products = Product::all();
+
+      // Obtén los permisos del usuario actual para editar y eliminar productos
+      $canEditProduct = auth()->user()->can('edit product');
+      $canDeleteProduct = auth()->user()->can('delete product');
+
+      return view('content.pages.products.products', compact('products', 'canEditProduct', 'canDeleteProduct'));
   }
+
 
   public function create ()
   {
-    $categories = Category::all(); // Obtiene todas las categorías
+    $categories = Category::all();
     return view('content.pages.products.add-product', compact('categories'));
   }
 
@@ -43,7 +52,7 @@ class ProductController extends Controller
   public function store(Request $request)
   {
     $request->validate([
-        'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         // Añade validaciones para otros campos si es necesario
     ]);
 
@@ -129,16 +138,22 @@ class ProductController extends Controller
 
   public function destroy($productId)
   {
-      // Buscar el producto por ID
-      $product = Product::find($productId);
+      // Verificar si el usuario tiene el permiso para eliminar productos
+      if (Gate::allows('delete products')) {
+          // Buscar el producto por ID
+          $product = Product::find($productId);
 
-      // Eliminar el producto
-      if ($product) {
-          $product->delete();
-          return redirect()->route('products')->with('success', 'Producto eliminado correctamente.');
+          // Eliminar el producto
+          if ($product) {
+              $product->delete();
+              return redirect()->route('products')->with('success', 'Producto eliminado correctamente.');
+          }
+
+          return response()->json(['error' => 'Producto no encontrado.'], 404);
+      } else {
+          // El usuario no tiene permisos para eliminar productos
+          return redirect()->route('products')->with('error', 'No tienes permisos para eliminar productos.');
       }
-
-      return response()->json(['error' => 'Producto no encontrado.'], 404);
   }
 
 

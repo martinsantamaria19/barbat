@@ -45,4 +45,16 @@ class ActivityController extends Controller
 
         return redirect()->back()->with('success', 'Actividad registrada con éxito.');
     }
+
+    public function getDeliveredActivitiesData()
+    {
+    $data = Activity::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+                    ->where('status', 'delivered')
+                    ->groupBy('date')
+                    ->orderBy('date', 'asc')
+                    ->get();
+
+    return response()->json($data);
+    }
+
 }

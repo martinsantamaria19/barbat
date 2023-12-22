@@ -31,6 +31,10 @@
 
 @section('content')
 
+@can ('view users')
+
+<h4 class="py-3 mb-2">Usuarios</h4>
+
 @if(session('success'))
   <div class="alert alert-primary d-flex" role="alert">
     <span class="badge badge-center rounded-pill bg-primary border-label-primary p-3 me-2"><i class="bx bx-user fs-6"></i></span>
@@ -69,21 +73,21 @@
         <input type="text" class="form-control" id="company" placeholder="Introduce el nombre de la empresa" name="company" aria-label="Introduce el nombre de la empresa" />
       </div>
       <div class="mb-3">
+        <label class="form-label" for="role">Rol</label>
+        <select class="form-select" id="role" name="role" aria-label="Selecciona un rol">
+            <option value="" selected>Seleccione un rol</option> <!-- Opción por defecto -->
+            @foreach ($roles as $role)
+                <option value="{{ $role->name }}">{{ $role->name }}</option> <!-- Usar el nombre en lugar del ID -->
+            @endforeach
+        </select>
+      </div>
+      <div class="mb-3">
         <label class="form-label" for="email">Email</label>
         <input type="text" class="form-control" id="email" placeholder="Ej: empresa@empresa.com" name="email" aria-label="Introduce la dirección de correo electrónico" />
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Contraseña</label>
         <input type="password" class="form-control" id="password" placeholder="Ingrese una contraseña" name="password">
-      </div>
-      <div class="mb-3">
-        <label for="role" class="form-label">Rol</label>
-        <select id="role" class="form-select" name="role">
-          <option value="">Seleccione un rol</option>
-          @foreach ($roles as $role)
-            <option value="{{ $role->id }}">{{ $role->name }}</option>
-          @endforeach
-        </select>
       </div>
       <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Crear Usuario</button>
       <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancelar</button>
@@ -116,19 +120,20 @@
       </div>
 
       <div class="mb-3">
+        <label class="form-label" for="editUserRole">Rol</label>
+        <select class="form-select" id="editUserRole" name="role" aria-label="Selecciona un rol">
+            <option value="" selected>Seleccione un rol</option> <!-- Opción por defecto -->
+            @foreach ($roles as $role)
+                <option value="{{ $role->name }}">{{ $role->name }}</option> <!-- Usar el nombre en lugar del ID -->
+            @endforeach
+        </select>
+      </div>
+
+      <div class="mb-3">
         <label class="form-label" for="editUserEmail">Email</label>
         <input type="text" class="form-control" id="editUserEmail" name="email" placeholder="Ej: usuario@ejemplo.com" aria-label="Introduce la dirección de correo electrónico" />
       </div>
 
-      <div class="mb-3">
-        <label for="editUserRole" class="form-label">Rol</label>
-        <select id="editUserRole" class="form-select" name="role_id">
-          <option value="">Seleccione un rol</option>
-          @foreach ($roles as $role)
-            <option value="{{ $role->id }}">{{ $role->name }}</option>
-          @endforeach
-        </select>
-      </div>
 
       <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Actualizar Usuario</button>
       <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancelar</button>
@@ -147,8 +152,8 @@
           <th>ID</th>
           <th>Nombre</th>
           <th>Correo Electrónico</th>
-          <th>Empresa</th>
           <th>Rol</th>
+          <th>Empresa</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -165,6 +170,20 @@
   <span class="d-none d-sm-inline-block">Nuevo Usuario</span>
 </button>
 
+@else
 
+<!-- Mensaje de no autorizado -->
+
+<link rel="stylesheet" href="{{asset('assets/vendor/css/pages/page-misc.css')}}">
+
+<div class="container-xxl container-p-y">
+  <div class="misc-wrapper">
+    <h2 class="mb-2 ">¡No estás autorizado!</h2>
+    <p class="mb-4 ">No tienes permiso para acceder aquí con el usuario que has iniciado sesión</p>
+    <a href="{{url('/')}}" class="btn btn-primary">Regresar al inicio</a>
+  </div>
+</div>
+
+@endcan
 
 @endsection
