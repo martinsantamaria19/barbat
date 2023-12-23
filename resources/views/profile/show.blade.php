@@ -50,7 +50,7 @@
             <div class="user-info text-center">
               @auth
                 <h4 class="mb-2">{{ Auth::user()->name }}</h4>
-                <span class="badge bg-label-secondary">{{ Auth::user()->role->name }}</span>
+                <span class="badge bg-label-secondary">{{ Auth::user()->roles->first()->name ?? 'Sin Rol' }}</span>
               @endauth
 
             </div>
@@ -72,13 +72,9 @@
               @endauth
             </li>
             <li class="mb-3">
-              <span class="fw-medium me-2">Estado:</span>
-              <span class="badge bg-label-success">Active</span>
-            </li>
-            <li class="mb-3">
               <span class="fw-medium me-2">Rol:</span>
               @auth
-                <span>{{ Auth::user()->role->name }}</span>
+                <span>{{ Auth::user()->roles->first()->name ?? 'Sin Rol' }}</span>
               @endauth
             </li>
             <li class="mb-3">

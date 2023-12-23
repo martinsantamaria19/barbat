@@ -8,12 +8,16 @@ use App\Models\Client;
 use Carbon\Carbon;
 use App\Models\Package;
 use App\Models\Activity;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class HomePage extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+        $notifications = $user->notifications;
         // Conteo de paquetes entregados
         $deliveredCount = Package::whereHas('latestActivity', function ($query) {
             $query->where('status', 'delivered');
@@ -59,6 +63,7 @@ class HomePage extends Controller
             'latestActivities' => $latestActivities,
             'packages' => $packages,
             'activeClients' => $activeClients,
+            'notifications' => $notifications,
         ]);
     }
 }

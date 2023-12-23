@@ -33,5 +33,9 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    public function notificationSettings()
+    {
+        return $this->hasMany(NotificationSetting::class);
+    }
 
 }

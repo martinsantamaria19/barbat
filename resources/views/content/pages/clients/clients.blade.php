@@ -227,6 +227,18 @@
         <input type="text" class="form-control" id="editCompanyCity" name="company_city" placeholder="Ej: Centro" aria-label="Introduce la localidad" />
       </div>
 
+      <div class="mb-3">
+        <label for="editCompanyStatus" class="form-label">Estado</label>
+        <div class="form-check form-switch">
+          <input type="hidden" name="client_status" value="inactive">
+          <input class="form-check-input" type="checkbox" role="switch"
+                 id="editCompanyStatus" name="client_status"
+                 value="active">
+        </div>
+      </div>
+
+
+
       <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Actualizar Cliente</button>
       <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancelar</button>
     </form>

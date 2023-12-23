@@ -64,12 +64,14 @@
       <div class="card-body row">
         <div class="col-4 ecommerce-select2-dropdown">
           <label class="form-label d-flex justify-content-between align-items-center" for="category-org">
-            <span>Cliente</span><a href="product-categories" class="fw-medium">Crear nuevo cliente</a>
+            <span>Cliente</span><a href="clients" class="fw-medium">Crear nuevo cliente</a>
           </label>
           <select id="client_id" name="client_id" class="select2 form-select" data-placeholder="Seleccione el cliente">
             <option value="" disabled selected>Seleccione un cliente</option>
             @foreach ($clients as $client)
-              <option value="{{ $client->id }}">{{ $client->company_name }}</option>
+              @if($client->client_status == 'active')
+                  <option value="{{ $client->id }}">{{ $client->company_name }}</option>
+              @endif
             @endforeach
           </select>
         </div>

@@ -69,7 +69,92 @@ $navbarDetached = ($navbarDetached ?? '');
       <!--/ Style Switcher -->
       @endif
 
+
         <ul class="navbar-nav flex-row align-items-center ms-auto">
+
+
+        <!-- Notification -->
+        <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
+          <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="bx bx-bell bx-sm"></i>
+            @if($unreadNotifications->count() > 0)
+                <span class="badge bg-danger rounded-pill badge-notifications">
+                    {{ $unreadNotifications->count() }}
+                </span>
+            @endif
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end py-0">
+            <li class="dropdown-menu-header border-bottom">
+                <div class="dropdown-header d-flex align-items-center py-3">
+                    <h5 class="text-body mb-0 me-auto">Notificaciones</h5>
+                    {{-- Puedes agregar funcionalidad para marcar todas como leídas aquí --}}
+                    <a href="{{ route('notifications.mark-all-read') }}" class="dropdown-notifications-all text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Marcar todas como leídas"><i class="bx fs-4 bx-envelope-open"></i></a>
+                  </div>
+            </li>
+            <li class="dropdown-notifications-list scrollable-container">
+                <ul class="list-group list-group-flush">
+                    @foreach ($unreadNotifications as $notification)
+                        <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar">
+                                      @switch($notification->data['status'])
+                                      @case('delivered')
+                                          <img src="{{ asset('assets/img/icons/custom/check-regular-24.png') }}" alt="Check" class="rounded">
+                                          @break
+                                      @case('shipped')
+                                          <img src="{{ asset('assets/img/icons/custom/success-truck.png') }}" alt="Truck" class="rounded">
+                                          @break
+                                      @case('processing')
+                                          <img src="{{ asset('assets/img/icons/custom/warning-clock.png') }}" alt="Clock" class="rounded">
+                                          @break
+                                      @default
+                                          <img src="{{ asset('assets/img/icons/custom/warning-clock.png') }}" alt="Clock" class="rounded">
+                                      @endswitch
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    {{-- Personaliza el título y el contenido de la notificación según tus necesidades --}}
+                                    <h6 class="mb-1">{{ $notification->data['title'] ?? 'Notification Title' }}</h6>
+                                    <p class="mb-0">{{ $notification->data['message'] ?? 'Notification message goes here...' }}</p>
+                                    <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+
+                                </div>
+                                <div class="flex-shrink-0 dropdown-notifications-actions">
+                                    {{-- Puedes agregar acciones como marcar como leída o eliminar aquí --}}
+                                    <a href="{{ route('notifications.mark-as-read', $notification->id) }}" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
+                                  </div>
+                            </div>
+                        </li>
+                    @endforeach
+                    @foreach ($readNotifications as $notification)
+                    <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar">
+                                        {{-- Puedes personalizar el avatar según el tipo de notificación --}}
+                                        <img src="{{ asset('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle">
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    {{-- Personaliza el título y el contenido de la notificación según tus necesidades --}}
+                                    <h6 class="mb-1">{{ $notification->data['title'] ?? 'Notification Title' }}</h6>
+                                    <p class="mb-0">{{ $notification->data['message'] ?? 'Notification message goes here...' }}</p>
+                                    <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+
+                                </div>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            </li>
+            <li class="dropdown-menu-footer border-top p-3">
+                {{-- Link para ver todas las notificaciones --}}
+              </li>
+        </ul>
+
+        </li>
+        <!--/ Notification -->
 
         <!-- User -->
         <li class="nav-item navbar-dropdown dropdown-user dropdown">

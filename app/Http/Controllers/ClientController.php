@@ -21,7 +21,7 @@ class ClientController extends Controller
       'activeClients' => $activeClients,
       'inactiveClients' => $inactiveClients,
       'totalBranches' => $totalBranches,
-  ]);
+    ]);
   }
 
 
@@ -57,7 +57,6 @@ class ClientController extends Controller
 
   public function update(Request $request, $clientId)
   {
-
     // Validar la entrada
     $validatedData = $request->validate([
         'company_name' => 'required|string|max:255',
@@ -67,11 +66,13 @@ class ClientController extends Controller
         'company_rut' => 'required|string',
         'company_state' => 'required|string',
         'company_city' => 'required|string',
+        'client_status' => 'required|string',
     ]);
 
     // Encontrar el cliente por ID y actualizarlo
     $client = Client::findOrFail($clientId);
     $client->fill($validatedData);
+    $client->client_status = $request->input('client_status');
     $client->save();
 
     // Redirigir con un mensaje de éxito

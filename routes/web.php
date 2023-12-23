@@ -16,6 +16,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\QrTestController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\SettingsController;
 
 
 
@@ -55,7 +58,6 @@ Route::middleware('auth')->group(function () {
   Route::post('/create-product-category', [ProductCategoryController::class, 'store']);
   Route::post('/product-categories/{categoryId}/update', [ProductCategoryController::class, 'update'])->name('product-categories.update');
   Route::post('/product-categories/{id}/delete', [ProductCategoryController::class, 'delete']);
-
 
   // Products
   Route::get('/products', [ProductController::class, 'index'])->name('products');
@@ -118,13 +120,23 @@ Route::middleware('auth')->group(function () {
 
 
 
-  // Settings - Roles and Permissions
+  // Roles and Permissions
   Route::get('/roles', [RoleController::class, 'index'])->name('roles');
   Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
   Route::put('/roles/{id}/update', [RoleController::class, 'update'])->name('roles.update');
   Route::post('/create-role', [RoleController::class, 'store'])->name('role.store');
   Route::delete('roles/{id}/delete', 'RoleController@destroy')->name('roles.destroy');
   Route::resource('permissions', PermissionController::class);
+
+  // Settings
+  Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
+  Route::get('/settings/notifications', [SettingsController::class, 'notifications'])->name('settings.notifications');
+  Route::put('/settings/notifications/update', [SettingsController::class, 'updateNotifications'])->name('settings.notifications.update');
+
+
+  // Notificaciones
+  Route::get('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.mark-all-read');
+  Route::get('/notifications/mark-as-read/{id}', [NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
 
 
 

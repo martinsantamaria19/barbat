@@ -40,7 +40,7 @@ class ActivityController extends Controller
         $activity = new Activity();
         $activity->package_id = $request->package_id;
         $activity->status = $request->status;
-        $activity->updated_by = Auth::id()->default('null');
+        $activity->updated_by = Auth::id();
         $activity->save();
 
         return redirect()->back()->with('success', 'Actividad registrada con éxito.');

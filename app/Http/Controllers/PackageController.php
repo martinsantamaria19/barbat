@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\DB;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\OrderStatusChangedNotification;
+use App\Notifications\NewOrder;
+use Illuminate\Support\Facades\Notification;
+
 
 
 
@@ -115,8 +119,12 @@ class PackageController extends Controller
         $activity->save();
         Log::info('Actividad creada para el paquete ID: ' . $package->id);
 
-
         DB::commit();
+
+        $usersToNotify = User::all();
+        $status = 'new';
+        Notification::send($usersToNotify, new NewOrder($package, $status));
+
         return redirect()->route('packages')->with('success', 'Paquete creado correctamente');
     } catch (\Exception $e) {
       Log::error('Error en store: ' . $e->getMessage());
@@ -145,6 +153,7 @@ class PackageController extends Controller
 
     try {
         $package = Package::findOrFail($packageId);
+        $newStatus = $request->status;
 
         // Log de información adicional
         Log::info('Package ID: ' . $packageId);
@@ -153,11 +162,17 @@ class PackageController extends Controller
 
         // Registrar la nueva actividad
         $activity = new Activity([
+            'package_id' => $package->id,
             'status' => $request->status,
             'updated_by' => auth()->id(), // Suponiendo que quieres registrar quién cambió el estado
             // Otros detalles de la actividad
         ]);
         $package->activities()->save($activity);
+
+        $usersToNotify = User::all(); // Ejemplo: Notificar a todos los usuarios
+        Notification::send($usersToNotify, new OrderStatusChangedNotification($package, $newStatus));
+
+
 
         return back()->with('success', 'Estado del envío actualizado correctamente');
     } catch (\Exception $e) {
