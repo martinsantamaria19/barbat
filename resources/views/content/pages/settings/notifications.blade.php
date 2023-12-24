@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Account settings - Pages')
+@section('title', 'Notificaciones')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
@@ -18,8 +18,8 @@
 <div class="row">
   <div class="col-md-12">
     <ul class="nav nav-pills flex-column flex-md-row mb-3">
-      <li class="nav-item"><a class="nav-link" href="{{url('pages/account-settings-account')}}"><i class="bx bx-user me-1"></i> Account</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{url('pages/account-settings-security')}}"><i class="bx bx-lock-alt me-1"></i> Security</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ route('settings.my-account')}}"><i class="bx bx-user me-1"></i> Mi Cuenta</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ route('settings.security') }}"><i class="bx bx-lock-alt me-1"></i> Contraseña</a></li>
       <li class="nav-item"><a class="nav-link active" href="javascript:void(0);"><i class="bx bx-bell me-1"></i> Notificaciones</a></li>
     </ul>
     <div class="card">

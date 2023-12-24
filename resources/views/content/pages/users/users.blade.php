@@ -35,24 +35,6 @@
 
 <h4 class="py-3 mb-2">Usuarios</h4>
 
-@if(session('success'))
-  <div class="alert alert-primary d-flex" role="alert">
-    <span class="badge badge-center rounded-pill bg-primary border-label-primary p-3 me-2"><i class="bx bx-user fs-6"></i></span>
-    <div class="d-flex flex-column ps-1">
-      <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">¡Correcto!</h6>
-      <span>{{ session('success') }}</span>
-    </div>
-  </div>
-@elseif(session('error'))
-  <div class="alert alert-danger d-flex" role="alert">
-    <span class="badge badge-center rounded-pill bg-danger border-label-danger p-3 me-2"><i class="bx bx-user fs-6"></i></span>
-    <div class="d-flex flex-column ps-1">
-      <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">¡Error!</h6>
-      <span>{{ session('error') }}</span>
-  </div>
-@endif
-
-
 <!-- Formulario Normal -->
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddUser" aria-labelledby="offcanvasAddUserLabel">
@@ -61,12 +43,17 @@
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body mx-0 flex-grow-0">
-    <!-- Ajusta la acción a la ruta correcta de Laravel -->
-    <form class="add-new-user pt-0" id="addNewUserForm" action="create-user" method="POST">
+    <form class="add-new-user pt-0" id="addNewUserForm" action="create-user" method="POST" autocomplete="off">
       @csrf
-      <div class="mb-3">
-        <label class="form-label" for="name">Nombre y Apellido</label>
-        <input type="text" class="form-control" id="name" placeholder="Introduce el nombre y apellido" name="name" aria-label="Introduce el nombre y apellido" />
+      <div class="d-flex">
+        <div class="mb-3 me-2">
+          <label class="form-label" for="name">Nombre</label>
+          <input type="text" class="form-control" id="name" placeholder="Introduce el nombre y apellido" name="name" aria-label="Introduce el nombre y apellido" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="name">Apellido</label>
+          <input type="text" class="form-control" id="lastname" placeholder="Introduce el apellido" name="lastname" aria-label="Introduce el apellido" />
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="company">Empresa</label>
@@ -83,11 +70,15 @@
       </div>
       <div class="mb-3">
         <label class="form-label" for="email">Email</label>
-        <input type="text" class="form-control" id="email" placeholder="Ej: empresa@empresa.com" name="email" aria-label="Introduce la dirección de correo electrónico" />
+        <input type="email" class="form-control" id="email" placeholder="Ej: empresa@empresa.com" name="email" autocomplete="new-email" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="phone">Teléfono</label>
+        <input type="text" class="form-control" id="phone" placeholder="Ej: 099123456" value="" autocomplete="off" name="phone" aria-label="Introduce el teléfono" />
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Contraseña</label>
-        <input type="password" class="form-control" id="password" placeholder="Ingrese una contraseña" name="password">
+        <input type="password" class="form-control" id="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" name="password" autocomplete="off" value="">
       </div>
       <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Crear Usuario</button>
       <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancelar</button>
@@ -109,10 +100,17 @@
       @method('PUT')
       <input type="hidden" id="editUserId" name="id">
 
-      <div class="mb-3">
-        <label class="form-label" for="editUserName">Nombre y Apellido</label>
-        <input type="text" class="form-control" id="editUserName" name="name" placeholder="Introduce el nombre completo" aria-label="Introduce el nombre completo" />
+      <div class="d-flex">
+        <div class="mb-3">
+          <label class="form-label" for="editUserName">Nombre</label>
+          <input type="text" class="form-control" id="editUserName" name="name" placeholder="Introduce el nombre" aria-label="Introduce el nombre" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="editUserLastname">Apellido</label>
+          <input type="text" class="form-control" id="editUserLastname" name="lastname" placeholder="Introduce el apellido" aria-label="Introduce el nombre apellido" />
+        </div>
       </div>
+
 
       <div class="mb-3">
         <label class="form-label" for="editUserCompany">Empresa</label>
@@ -124,7 +122,7 @@
         <select class="form-select" id="editUserRole" name="role" aria-label="Selecciona un rol">
             <option value="" selected>Seleccione un rol</option> <!-- Opción por defecto -->
             @foreach ($roles as $role)
-                <option value="{{ $role->name }}">{{ $role->name }}</option> <!-- Usar el nombre en lugar del ID -->
+                <option value="{{ $role->name }}">{{ $role->name }}</option>
             @endforeach
         </select>
       </div>
@@ -134,6 +132,17 @@
         <input type="text" class="form-control" id="editUserEmail" name="email" placeholder="Ej: usuario@ejemplo.com" aria-label="Introduce la dirección de correo electrónico" />
       </div>
 
+      <div class="mb-3">
+        <label class="form-label" for="editUserPhone">Teléfono</label>
+        <input type="text" class="form-control" id="editUserPhone" name="phone" placeholder="Ej: 099123456" aria-label="Introduce el teléfono" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="editUserStatus">Estado</label>
+        <select class="form-select" id="editUserStatus" name="status" aria-label="Selecciona un estado">
+            <option value="active">Activo</option>
+            <option value="inactive">Inactivo</option>
+        </select>
+      </div>
 
       <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Actualizar Usuario</button>
       <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancelar</button>
@@ -141,7 +150,22 @@
   </div>
 </div>
 
-
+@if(session('success'))
+  <div class="alert alert-primary d-flex" role="alert">
+    <span class="badge badge-center rounded-pill bg-primary border-label-primary p-3 me-2"><i class="bx bx-user fs-6"></i></span>
+    <div class="d-flex flex-column ps-1">
+      <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">¡Correcto!</h6>
+      <span>{{ session('success') }}</span>
+    </div>
+  </div>
+@elseif(session('error'))
+  <div class="alert alert-danger d-flex" role="alert">
+    <span class="badge badge-center rounded-pill bg-danger border-label-danger p-3 me-2"><i class="bx bx-user fs-6"></i></span>
+    <div class="d-flex flex-column ps-1">
+      <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">¡Error!</h6>
+      <span>{{ session('error') }}</span>
+  </div>
+@endif
 
 <!-- Users List Table -->
 <div class="card p-4">
@@ -154,6 +178,7 @@
           <th>Correo Electrónico</th>
           <th>Rol</th>
           <th>Empresa</th>
+          <th>Estado</th>
           <th>Acciones</th>
         </tr>
       </thead>

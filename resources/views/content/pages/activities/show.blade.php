@@ -1,10 +1,10 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Actividad del Paquete')
+@section('title', 'Actividad del Envío')
 
 @section('content')
 <div class="container">
-    <h1>Actividades del Paquete</h1>
+    <h1>Actividades del Envío</h1>
     <ul>
         @foreach($activities as $activity)
             <li>

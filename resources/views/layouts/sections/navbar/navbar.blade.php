@@ -175,12 +175,17 @@ $navbarDetached = ($navbarDetached ?? '');
                   <div class="flex-grow-1">
                     <span class="fw-medium d-block">
                       @if (Auth::check())
-                      {{ Auth::user()->name }}
+                      {{ Auth::user()->name }} {{ Auth::user()->lastname }}
                       @else
-                      John Doe
+                        -
                       @endif
                     </span>
-                    <small class="text-muted">Admin</small>
+                    <small class="text-muted">
+                      @if (Auth::check())
+                        {{ Auth::user()->roles->first()->name ?? 'Sin Rol' }}
+                      @else
+                        -
+                      @endif</small>
                   </div>
                 </div>
               </a>
@@ -189,7 +194,7 @@ $navbarDetached = ($navbarDetached ?? '');
               <div class="dropdown-divider"></div>
             </li>
             <li>
-              <a class="dropdown-item" href="{{ Route::has('profile.show') ? route('profile.show') : 'javascript:void(0);' }}">
+              <a class="dropdown-item" href="{{ route('settings.my-account')}}">
                 <i class="bx bx-user me-2"></i>
                 <span class="align-middle">Mi Perfil</span>
               </a>

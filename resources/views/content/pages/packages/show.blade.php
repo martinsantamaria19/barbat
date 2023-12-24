@@ -75,16 +75,16 @@
     <div class="card">
       <div class="card-body">
         @if ($activity->status == 'delivered')
-          <h3 class="mb-0"><strong>Paquete Entregado</strong></h3>
+          <h3 class="mb-0"><strong>Envío Entregado</strong></h3>
           <p>{{ $activity->created_at->format('d/m/Y H:i') }} hs.</p>
         @elseif($activity->status == 'shipped')
-          <h3><strong>Paquete En Camino</strong></h3>
+          <h3><strong>Envío En Camino</strong></h3>
         @else
-          <h3><strong>Paquete En Proceso</strong></h3>
+          <h3><strong>Envío En Proceso</strong></h3>
         @endif
         <div>
           <ul class="timeline ps-3 mt-4">
-            {{-- Paquete Ingresado (siempre visible) --}}
+            {{-- Envío Ingresado (siempre visible) --}}
             <li class="timeline-item ps-4 border-left-dashed">
               <span class="timeline-indicator-advanced timeline-indicator-success border-0 shadow-none mt-1">
                 <i class='bx bx-check-circle'></i>
@@ -98,7 +98,7 @@
                   @endphp
 
                   @if ($processingActivity)
-                      <h6 class="mb-1">Creado por <strong>{{ $processingActivity->user->name }}</strong></h6>
+                      <h6 class="mb-1">Creado por <strong>{{ $processingActivity->user->name }}{{ $processingActivity->user->lastname }}</strong></h6>
                       <p class="text-muted mb-0">{{ $processingActivity->created_at->format('d/m/Y')}} - {{ $processingActivity->created_at->format('H:i')}}hs.</p>
                   @else
                       <p class="text-muted mb-0">Información no disponible</p>
@@ -124,7 +124,7 @@
                         @endif
                     </div>
                     @if($shippedActivity)
-                        <h6 class="mb-1">Marcado por <strong>{{ $shippedActivity->user->name }}</strong></h6>
+                        <h6 class="mb-1">Marcado por <strong>{{ $shippedActivity->user->name }} {{ $shippedActivity->user->lastname }}</strong></h6>
                         <p class="text-muted mb-0">{{ $shippedActivity->created_at->format('d/m/Y')}} - {{ $shippedActivity->created_at->format('H:i')}}hs.</p>
                     @else
                         <p class="text-muted mb-0">Aún no enviado</p>
@@ -150,7 +150,7 @@
                         @endif
                     </div>
                     @if($deliveredActivity)
-                        <h6 class="mb-1">Entregado por <strong>{{ $deliveredActivity->user->name }}</strong></h6>
+                        <h6 class="mb-1">Entregado por <strong>{{ $deliveredActivity->user->name }} {{ $deliveredActivity->user->lastname }}</strong></h6>
                         <p class="text-muted mb-0">{{ $deliveredActivity->created_at->format('d/m/Y')}} - {{ $deliveredActivity->created_at->format('H:i')}}hs.</p>
                     @else
                         <p class="text-muted mb-0">Aún no entregado - Entrega estimada: {{ Carbon\Carbon::parse($package->delivery_date)->format('d/m/Y') }}</p>
@@ -164,6 +164,16 @@
       </div>
     </div>
   </div>
+  <div class="d-flex justify-content-center text-center mt-5">
+    <button class="btn btn-primary" id="backButton">Volver atrás</button>
+  </div>
 </div>
+
+<script>
+  document.getElementById('backButton').addEventListener('click', function() {
+    history.back();
+});
+
+</script>
 
 @endsection

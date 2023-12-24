@@ -164,13 +164,13 @@ $configData = Helper::appClasses();
                 <small class="fw-medium activity-user">
                   @switch($activity->status)
                     @case('processing')
-                      Creado por <strong>{{ $activity->user->name }}</strong>
+                      Creado por <strong>{{ $activity->user->name }} {{ $activity->user->lastname }}</strong>
                       @break
                     @case('shipped')
-                      Actualizado por <strong>{{ $activity->user->name }}</strong>
+                      Actualizado por <strong>{{ $activity->user->name }} {{ $activity->user->lastname }}</strong>
                       @break
                     @default
-                      Entregado por <strong>{{ $activity->user->name }}</strong>
+                      Entregado por <strong>{{ $activity->user->name }} {{ $activity->user->lastname }}</strong>
                     @endswitch
                 </small>
 

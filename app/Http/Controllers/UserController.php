@@ -39,17 +39,21 @@ class UserController extends Controller
     try {
         $request->validate([
             'name' => 'required|string|max:255',
+            'lastname' => 'required|string',
             'company' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'required|string',
             'password' => 'required|string|min:8',
-            'role' => 'required|exists:roles,name', // Cambiado a "name" en lugar de "id"
+            'role' => 'required|exists:roles,name',
         ]);
 
         // Crea el usuario con los datos del formulario
         $user = User::create([
             'name' => $request->input('name'),
+            'lastname' => $request->input('lastname'),
             'company' => $request->input('company'),
             'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
             'password' => bcrypt($request->input('password')),
         ]);
 
@@ -79,9 +83,11 @@ public function edit($userId)
     $user = User::with('roles')->findOrFail($userId);
     $roles = $user->roles->pluck('name'); // Obtener los nombres de los roles
 
+
     return response()->json([
         'user' => $user,
-        'roles' => $roles
+        'roles' => $roles,
+        'status' => $user->status,
     ]);
 }
 
@@ -91,7 +97,9 @@ public function edit($userId)
       // Validar la entrada
       $validatedData = $request->validate([
           'name' => 'required|string|max:255',
+          'lastname' => 'required|string|max:255',
           'email' => 'required|email|unique:users,email,' . $id,
+          'phone' => 'nullable|string',
           'company' => 'nullable|string',
           'role' => 'required|exists:roles,name',
       ]);
@@ -99,6 +107,7 @@ public function edit($userId)
       // Encontrar el usuario por ID y actualizarlo
       $user = User::findOrFail($id);
       $user->syncRoles([$request->input('role')]);
+      $user->status = $request->input('status');
       $user->update($validatedData);
 
       // Redirigir con un mensaje de éxito
@@ -113,6 +122,45 @@ public function edit($userId)
 
     // Redirigir con un mensaje de éxito
     return back()->with('success', 'Usuario eliminado correctamente.');
+  }
+
+  public function show($id)
+  {
+    $user = User::findOrFail($id);
+    $roles = Role::all();
+
+    return view('content.pages.users.show', compact('user', 'roles'));
+  }
+
+  public function updatePassword(Request $request)
+  {
+    $request->validate([
+        'newPassword' => 'required|string|min:8',
+    ]);
+
+    $user = auth()->user();
+    $user->password = bcrypt($request->newPassword);
+    $user->save();
+
+    return back()->with('success', 'Contraseña actualizada correctamente.');
+  }
+
+  public function suspend($id)
+  {
+    $user = User::findOrFail($id);
+    $user->status = 'inactive';
+    $user->save();
+
+    return response()->json(['success' => 'Usuario suspendido correctamente']);
+  }
+
+  public function activate($id)
+  {
+    $user = User::findOrFail($id);
+    $user->status = 'active';
+    $user->save();
+
+    return response()->json(['success' => 'Usuario activado correctamente']);
   }
 
 }

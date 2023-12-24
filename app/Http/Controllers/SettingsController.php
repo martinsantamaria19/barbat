@@ -71,6 +71,16 @@ class SettingsController extends Controller {
     return back()->with('success', 'Configuraciones actualizadas correctamente.');
   }
 
+  public function security()
+  {
+    return view('content.pages.settings.security');
+  }
+
+  public function myAccount()
+  {
+    return view('content.pages.settings.my-account');
+  }
+
 
 
 

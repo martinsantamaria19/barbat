@@ -27,7 +27,7 @@
 
 @section('content')
 
-
+@can('view roles')
 
 @if(session('success'))
   <div class="alert alert-primary d-flex" role="alert">
@@ -96,6 +96,20 @@
 @include('_partials/_modals/modal-edit-role')
 <!-- / Add Role Modal -->
 
+@else
 
+<!-- Mensaje de no autorizado -->
+
+<link rel="stylesheet" href="{{asset('assets/vendor/css/pages/page-misc.css')}}">
+
+<div class="container-xxl container-p-y">
+  <div class="misc-wrapper">
+    <h2 class="mb-2 ">¡No estás autorizado!</h2>
+    <p class="mb-4 ">No tienes permiso para acceder aquí con el usuario que has iniciado sesión</p>
+    <a href="{{url('/')}}" class="btn btn-primary">Regresar al inicio</a>
+  </div>
+</div>
+
+@endcan
 
 @endsection

@@ -98,8 +98,13 @@ Route::middleware('auth')->group(function () {
   Route::get('/users-list', [UserController::class, 'getUsersList']);
   Route::post('/create-user', [UserController::class, 'store'])->name('user.store');
   Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+  Route::get('/users/{id}/show', [UserController::class, 'show'])->name('users.show');
   Route::put('/users/{id}/update', [UserController::class, 'update'])->name('users.update');
+  Route::put('/users/{id}/suspend', [UserController::class, 'suspend'])->name('user.suspend');
+  Route::put('/users/{id}/activate', [UserController::class, 'activate'])->name('user.activate');
   Route::post('/delete-user/{userId}', [UserController::class, 'destroy']);
+  Route::post('/user/password/update', [UserController::class, 'updatePassword'])->name('user.password.update');
+
 
   // Packages
   Route::get('/packages', [PackageController::class, 'index'])->name('packages');
@@ -119,7 +124,6 @@ Route::middleware('auth')->group(function () {
   Route::get('/activities/delivered-data', 'ActivityController@getDeliveredActivitiesData');
 
 
-
   // Roles and Permissions
   Route::get('/roles', [RoleController::class, 'index'])->name('roles');
   Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
@@ -131,6 +135,8 @@ Route::middleware('auth')->group(function () {
   // Settings
   Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
   Route::get('/settings/notifications', [SettingsController::class, 'notifications'])->name('settings.notifications');
+  Route::get('/settings/security', [SettingsController::class, 'security'])->name('settings.security');
+  Route::get('/settings/my-account', [SettingsController::class, 'myAccount'])->name('settings.my-account');
   Route::put('/settings/notifications/update', [SettingsController::class, 'updateNotifications'])->name('settings.notifications.update');
 
 

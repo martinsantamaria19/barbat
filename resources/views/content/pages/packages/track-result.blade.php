@@ -72,14 +72,14 @@
 
         @switch($activity->status)
             @case('delivered')
-            <h3 class="mb-0"><strong class="text-success">Paquete Entregado</strong></h3>
+            <h3 class="mb-0"><strong class="text-success">Envío Entregado</strong></h3>
               <p>{{ $activity->created_at->format('d/m/Y H:i') }} hs.</p>
             @break
             @case('shipped')
-            <h3><strong class="text-success">Paquete En Camino</strong></h3>
+            <h3><strong class="text-success">Envío En Camino</strong></h3>
                 @break
             @case('processing')
-            <h3><strong class="text-success">Paquete En Proceso</strong></h3>
+            <h3><strong class="text-success">Envío En Proceso</strong></h3>
                 @break
             @default
                 {{ $activity->status }}

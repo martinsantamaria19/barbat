@@ -43,7 +43,7 @@
         </div>
         <div class="barcode">
           <!-- You will need to replace 'path_to_barcode_image.png' with the actual path to your barcode image -->
-          <img src="{{ asset($package->qr_code_path)}}" alt="Código QR del paquete {{ $package->codigo }}">
+          <img src="{{ asset($package->qr_code_path)}}" alt="Código QR del envío {{ $package->codigo }}">
         </div>
       </div>
     </div>

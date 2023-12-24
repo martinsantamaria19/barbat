@@ -87,25 +87,6 @@
           "slug": "roles"
         }
       ]
-    },
-    {
-      "url": "/settings",
-      "name": "Ajustes",
-      "icon": "menu-icon tf-icons bx bx-dots-horizontal-rounded",
-      "slug": ["settings, notifications"],
-      "submenu": [
-        {
-          "url": "/settings",
-          "name": "Configuración",
-          "slug": "settings"
-        },
-        {
-          "url": "/settings/notifications",
-          "name": "Notificaciones",
-          "slug": "notifications"
-        }
-      ]
     }
-
   ]
 }
