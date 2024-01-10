@@ -64,7 +64,7 @@
           "slug": "clients"
         },
         {
-          "url": "branches",
+          "url": "/branches",
           "name": "Sucursales",
           "slug": "branches"
         }
@@ -84,7 +84,7 @@
         {
           "url": "/roles",
           "name": "Roles de Usuario",
-          "slug": "roles"
+          "slug": "roles.index"
         }
       ]
     }

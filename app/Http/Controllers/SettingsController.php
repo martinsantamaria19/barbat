@@ -78,7 +78,8 @@ class SettingsController extends Controller {
 
   public function myAccount()
   {
-    return view('content.pages.settings.my-account');
+    $user = auth()->user();
+    return view('content.pages.settings.my-account', compact('user'));
   }
 
 

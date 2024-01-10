@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'User View - Pages')
+@section('title', 'Perfil de Usuario')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}">
@@ -59,7 +59,7 @@
             <img class="img-fluid rounded my-4" src="{{asset('assets/img/branding/logo.png')}}" height="60" width="60" alt="User avatar" />
             <div class="user-info text-center">
               @auth
-                <h4 class="mb-2">{{ $user->name }}</h4>
+                <h4 class="mb-2">{{ $user->name }} {{ $user->lastname }}</h4>
                 <span class="badge bg-label-secondary">{{ Auth::user()->roles->first()->name ?? 'Sin Rol' }}</span>
               @endauth
 
@@ -113,11 +113,6 @@
           </ul>
           <div class="d-flex justify-content-center pt-3">
             <a href="javascript:;" class="btn btn-primary me-3" data-bs-target="#editUser" data-bs-toggle="modal">Editar</a>
-            @if(Auth::user()->status == 'active')
-              <button class="btn btn-warning" onclick="suspendUser({{ Auth::user()->id }})">Suspender</button>
-            @elseif(Auth::user()->status == 'inactive')
-              <button class="btn btn-success" onclick="activateUser({{ Auth::user()->id }})">Activar</button>
-            @endif
         </div>
       </div>
     </div>

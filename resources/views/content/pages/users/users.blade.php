@@ -57,8 +57,15 @@
       </div>
       <div class="mb-3">
         <label class="form-label" for="company">Empresa</label>
-        <input type="text" class="form-control" id="company" placeholder="Introduce el nombre de la empresa" name="company" aria-label="Introduce el nombre de la empresa" />
+        <select class="form-select" id="company" name="company" aria-label="Selecciona la empresa">
+            <option value="" disabled selected>Selecciona la empresa</option>
+            <option value="Barbat">Barbat</option>
+            @foreach($clients as $client)
+                <option value="{{ $client->company_name }}">{{ $client->company_name }}</option>
+            @endforeach
+        </select>
       </div>
+
       <div class="mb-3">
         <label class="form-label" for="role">Rol</label>
         <select class="form-select" id="role" name="role" aria-label="Selecciona un rol">

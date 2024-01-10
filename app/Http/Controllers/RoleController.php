@@ -123,8 +123,12 @@ public function destroy($id)
     try {
         $role = Role::findOrFail($id);
 
+        if ($role->name === 'Administrador' || $role->name === 'Cliente') {
+          return back()->with('error', "No se puede eliminar el rol {$role->name}.");
+        }
+
         // Verifica si hay usuarios asignados a este rol
-        if ($role->users->count() > 0) {
+        else if ($role->users->count() > 0) {
             return back()->with('error', 'No se puede eliminar el rol porque tiene usuarios asignados.');
         }
 
@@ -137,7 +141,5 @@ public function destroy($id)
         return back()->with('error', 'Ocurrió un error al eliminar el rol.');
     }
 }
-
-
 
 }

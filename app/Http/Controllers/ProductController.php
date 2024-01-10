@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Gate;
 
 
 
@@ -51,8 +52,10 @@ class ProductController extends Controller
 
   public function store(Request $request)
   {
+    try {
+
     $request->validate([
-        'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
         // Añade validaciones para otros campos si es necesario
     ]);
 
@@ -69,12 +72,16 @@ class ProductController extends Controller
         $request->file('file')->move(public_path('assets/img/products'), $imageName);
         $product->image = 'assets/img/products/'.$imageName;
     }
-
     $product->save();
 
     $product->categories()->attach($request->input('category-org'));
 
     return redirect()->back()->with('success', true);
+
+    } catch (\Exception $e) {
+        // Imprimir mensaje de error o registrar en el log
+        dd($e->getMessage());
+    }
   }
 
   public function edit($id)

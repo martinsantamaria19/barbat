@@ -11,6 +11,7 @@ $permissionNamesMap = [
     'view branches'     => 'Ver sucursales',
     'view roles'      => 'Ver roles',
     'view users'      => 'Ver usuarios',
+    'view own'        => 'Ver sus envíos'
 ];
 @endphp
 

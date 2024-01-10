@@ -27,6 +27,100 @@ $configData = Helper::appClasses();
 
 @section('content')
 
+
+<div class="col-12">
+  <div class="row g-4 mb-4">
+    <div class="col-sm-6 col-xl-3">
+      <a href="clients">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-start justify-content-between">
+            <div class="content-left">
+              <span>Total de Clientes</span>
+              <div class="d-flex align-items-end mt-2">
+                <h4 class="mb-0 me-2">{{ $totalClients }}</h4>
+              </div>
+            </div>
+            <div class="avatar">
+              <span class="avatar-initial rounded bg-label-primary">
+                <i class="bx bx-user bx-sm"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </a>
+    </div>
+
+    <div class="col-sm-6 col-xl-3">
+      <a href="clients">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-start justify-content-between">
+            <div class="content-left">
+              <span>Clientes Activos</span>
+              <div class="d-flex align-items-end mt-2">
+                <h4 class="mb-0 me-2">{{ $activeClientsCount }}</h4>
+              </div>
+            </div>
+            <div class="avatar">
+              <span class="avatar-initial rounded bg-label-success">
+                <i class="bx bx-group bx-sm"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </a>
+    </div>
+
+    <div class="col-sm-6 col-xl-3">
+      <a href="clients">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-start justify-content-between">
+            <div class="content-left">
+              <span>Clientes Inctivos</span>
+              <div class="d-flex align-items-end mt-2">
+                <h4 class="mb-0 me-2">{{ $inactiveClients }}</h4>
+              </div>
+            </div>
+            <div class="avatar">
+              <span class="avatar-initial rounded bg-label-danger">
+                <i class="bx bx-user-check bx-sm"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </a>
+    </div>
+
+    <div class="col-sm-6 col-xl-3">
+      <a href="branches">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-start justify-content-between">
+            <div class="content-left">
+              <span>Sucursales</span>
+              <div class="d-flex align-items-end mt-2">
+                <h4 class="mb-0 me-2">{{ $totalBranches }}</h4>
+              </div>
+            </div>
+            <div class="avatar">
+              <span class="avatar-initial rounded bg-label-warning">
+                <i class="bx bx-user-voice bx-sm"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+
 <!-- First Row -->
 <div class="row">
 
@@ -78,36 +172,7 @@ $configData = Helper::appClasses();
   </div>
 </div>
 
-<div class="col-12">
-  {{-- <!-- Line Area Chart -->
-  <div class="col-12 mb-4">
-    <div class="card">
-      <div class="card-header d-flex justify-content-between">
-        <div>
-          <h5 class="card-title mb-0">Reporte</h5>
-        </div>
-        <div class="dropdown">
-          <button type="button" class="btn dropdown-toggle px-0" data-bs-toggle="dropdown" aria-expanded="false"><i class="bx bx-calendar"></i></button>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Hoy</a></li>
-            <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Ayer</a></li>
-            <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Últimos 7 Días</a></li>
-            <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Últimos 30 Días</a></li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Este  Mes</a></li>
-            <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Mes Anterior</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="card-body">
-        <div id="lineAreaChart"></div>
-      </div>
-    </div>
-  </div>
-  <!-- /Line Area Chart --> --}}
-</div>
+
 
 <!-- Third Row -->
   <!-- Últimos movimientos -->
@@ -124,62 +189,67 @@ $configData = Helper::appClasses();
         <ul class="p-0 m-0">
           @foreach($latestActivities as $activity)
           <li class="d-flex mb-4 pb-1 border-bottom">
-            <div class="avatar flex-shrink-0 me-3">
-              @switch($activity->status)
-                @case('delivered')
-                  <img src="{{asset('assets/img/icons/custom/check-regular-24.png')}}" alt="Check" class="rounded">
-                  @break
-                @case('shipped')
-                  <img src="{{asset('assets/img/icons/custom/success-truck.png')}}" alt="Truck" class="rounded">
-                  @break
-                @case('processing')
-                  <img src="{{asset('assets/img/icons/custom/warning-clock.png')}}" alt="Clock" class="rounded">
-                  @break
-                @default
-                  <img src="{{asset('assets/img/icons/custom/warning-clock.png')}}" alt="Clock" class="rounded">
+            <a href="{{ url('package/' . $activity->package->id) }}" class="text-decoration-none col-12 d-flex">
+              <div class="avatar flex-shrink-0 me-3">
+                @switch($activity->status)
+                  @case('delivered')
+                    <img src="{{asset('assets/img/icons/custom/check-regular-24.png')}}" alt="Check" class="rounded">
+                    @break
+                  @case('shipped')
+                    <img src="{{asset('assets/img/icons/custom/success-truck.png')}}" alt="Truck" class="rounded">
+                    @break
+                  @case('processing')
+                    <img src="{{asset('assets/img/icons/custom/warning-clock.png')}}" alt="Clock" class="rounded">
+                    @break
+                  @default
+                    <img src="{{asset('assets/img/icons/custom/warning-clock.png')}}" alt="Clock" class="rounded">
                 @endswitch
-            </div>
-            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-              <div class="me-2">
-                <small class="text-muted">{{ $activity->package->client->company_name }} - {{ $activity->package->branch->branch_name }}</small>
-                <h6 class="mb-0">
-                  @switch($activity->status)
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                <div class="me-2">
+                  <small class="text-muted">#{{ $activity->package->id }} - {{ $activity->package->client->company_name }} - {{ $activity->package->branch->branch_name }}</small>
+                  <h6 class="mb-0">
+                    @switch($activity->status)
                       @case('delivered')
-                          Entregado
-                          @break
+                        Entregado
+                        @break
                       @case('shipped')
-                          En Camino
-                          @break
+                        En Camino
+                        @break
                       @case('processing')
-                          En Proceso
-                          @break
+                        En Proceso
+                        @break
                       @default
-                          {{ $activity->status }}
-                  @endswitch
-                </h6>
-
-              </div>
-              <div class="row text-end user-progress">
-                <small class="fw-medium activity-user">{{ $activity->created_at->format('d/m/Y')}} - {{ $activity->created_at->format('H:i')}}hs.</small>
-                <small class="fw-medium activity-user">
-                  @switch($activity->status)
-                    @case('processing')
-                      Creado por <strong>{{ $activity->user->name }} {{ $activity->user->lastname }}</strong>
-                      @break
-                    @case('shipped')
-                      Actualizado por <strong>{{ $activity->user->name }} {{ $activity->user->lastname }}</strong>
-                      @break
-                    @default
-                      Entregado por <strong>{{ $activity->user->name }} {{ $activity->user->lastname }}</strong>
+                        {{ $activity->status }}
                     @endswitch
-                </small>
-
+                  </h6>
+                </div>
+                <div class="row text-end user-progress">
+                  <small class="fw-medium activity-user">{{ $activity->created_at->format('d/m/Y')}} - {{ $activity->created_at->format('H:i')}}hs.</small>
+                  <small class="fw-medium activity-user">
+                    @switch($activity->status)
+                      @case('processing')
+                        Creado por <strong>{{ $activity->user->name }} {{ $activity->user->lastname }}</strong>
+                        @break
+                      @case('shipped')
+                        Actualizado por <strong>{{ $activity->user->name }} {{ $activity->user->lastname }}</strong>
+                        @break
+                      @default
+                        Entregado por <strong>{{ $activity->user->name }} {{ $activity->user->lastname }}</strong>
+                    @endswitch
+                  </small>
+                </div>
               </div>
-            </div>
+            </a> <!-- Cierre del enlace -->
           </li>
-          @endforeach
+        @endforeach
+
         </ul>
       </div>
+      <div class="d-flex justify-content-end m-3 mt-0">
+        <a href="activity" class="btn btn-primary " role="button">Ver todos</a>
+      </div>
+
     </div>
   </div>
   <!--/ Últimos movimientos -->

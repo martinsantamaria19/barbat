@@ -125,11 +125,11 @@ Route::middleware('auth')->group(function () {
 
 
   // Roles and Permissions
-  Route::get('/roles', [RoleController::class, 'index'])->name('roles');
+  Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
   Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
   Route::put('/roles/{id}/update', [RoleController::class, 'update'])->name('roles.update');
   Route::post('/create-role', [RoleController::class, 'store'])->name('role.store');
-  Route::delete('roles/{id}/delete', 'RoleController@destroy')->name('roles.destroy');
+  Route::delete('roles/{id}/delete', [RoleController::class, 'destroy'])->name('roles.destroy');
   Route::resource('permissions', PermissionController::class);
 
   // Settings

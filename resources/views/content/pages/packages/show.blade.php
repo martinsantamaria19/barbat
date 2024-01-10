@@ -20,10 +20,10 @@
     <div class="card">
       <div class="card-body">
         <h4>Cliente</h4>
-        <span class="d-block"><strong>Cliente:</strong> Coca Cola</span>
-        <span class="d-block"><strong>Sucursal:</strong> Pocitos</span>
-        <span class="d-block"><strong>Dirección:</strong> L. A. De Herrera 2822</span>
-        <span class="d-block"><strong>Teléfono:</strong> 099 807 750</span>
+        <span class="d-block"><strong>Cliente:</strong> {{ $package->client->company_name }}</span>
+        <span class="d-block"><strong>Sucursal:</strong> {{ $package->branch->branch_name }}</span>
+        <span class="d-block"><strong>Dirección:</strong> {{ $package->branch->branch_address }}</span>
+        <span class="d-block"><strong>Teléfono:</strong> {{ $package->branch->branch_phone }}</span>
         <div class="product-list mt-4">
           <div class="table-responsive">
             <table class="table table-striped table-hover">
@@ -98,7 +98,7 @@
                   @endphp
 
                   @if ($processingActivity)
-                      <h6 class="mb-1">Creado por <strong>{{ $processingActivity->user->name }}{{ $processingActivity->user->lastname }}</strong></h6>
+                      <h6 class="mb-1">Creado por <strong>{{ $processingActivity->user->name }} {{ $processingActivity->user->lastname }}</strong></h6>
                       <p class="text-muted mb-0">{{ $processingActivity->created_at->format('d/m/Y')}} - {{ $processingActivity->created_at->format('H:i')}}hs.</p>
                   @else
                       <p class="text-muted mb-0">Información no disponible</p>

@@ -4,7 +4,7 @@
 
 @extends('layouts/layoutMaster')
 
-@section('title', 'Configuración')
+@section('title', 'Contraseña')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
@@ -30,7 +30,7 @@
 
 @section('content')
 <h4 class="py-3 mb-4">
-  <span class="text-muted fw-light">Configuración /</span> Securidad
+  <span class="text-muted fw-light">Configuración /</span> Seguridad
 </h4>
 
 @if(session('success'))

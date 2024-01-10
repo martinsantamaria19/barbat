@@ -66,7 +66,7 @@
               </tr>
           </thead>
           <tbody>
-              {{-- Los datos se llenarán con DataTables --}}
+
           </tbody>
         </table>
       </div>

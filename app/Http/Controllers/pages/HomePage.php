@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Models\Package;
 use App\Models\Activity;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Branch;
 
 
 
@@ -54,6 +55,10 @@ class HomePage extends Controller
                             ->take(10) // Por ejemplo, los top 10
                             ->get();
 
+        $totalClients = Client::count(); // Calcula el total de clientes
+        $activeClientsCount = Client::where('client_status', 'active')->count(); // Calcula el total de clientes activos
+        $inactiveClients = Client::where('client_status', 'inactive')->count(); // Calcula el total de clientes inactivos
+        $totalBranches = Branch::count(); // Calcula el total de sucursales
 
         // Pasar datos a la vista
         return view('content.pages.dashboard.pages-home', [
@@ -62,8 +67,12 @@ class HomePage extends Controller
             'processingCount' => $processingCount,
             'latestActivities' => $latestActivities,
             'packages' => $packages,
-            'activeClients' => $activeClients,
+            'activeClientsCount' => $activeClientsCount,
             'notifications' => $notifications,
+            'totalClients' => $totalClients,
+            'activeClients' => $activeClients,
+            'inactiveClients' => $inactiveClients,
+            'totalBranches' => $totalBranches,
         ]);
     }
 }

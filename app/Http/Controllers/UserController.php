@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Client;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -14,8 +15,9 @@ class UserController extends Controller
   public function index()
   {
     $roles = Role::all();
+    $clients = Client::all();
 
-    return view('content.pages.users.users', compact('roles'));
+    return view('content.pages.users.users', compact('roles','clients'));
   }
 
 
