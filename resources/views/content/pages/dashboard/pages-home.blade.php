@@ -27,6 +27,7 @@ $configData = Helper::appClasses();
 
 @section('content')
 
+@role('Administrador')
 
 <div class="col-12">
   <div class="row g-4 mb-4">
@@ -120,6 +121,7 @@ $configData = Helper::appClasses();
   </div>
 </div>
 
+@endrole
 
 <!-- First Row -->
 <div class="row">
@@ -171,7 +173,6 @@ $configData = Helper::appClasses();
     </div>
   </div>
 </div>
-
 
 
 <!-- Third Row -->

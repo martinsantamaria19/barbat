@@ -723,6 +723,7 @@ const Helpers = {
       const containerFluid = [].slice.call(document.querySelectorAll('.container-fluid')) // To get container-fluid
       const containerXxl = [].slice.call(document.querySelectorAll('.container-xxl')) // To get container-xxl
       const verticalMenu = document.querySelector('.menu-vertical')
+      const verticalMenuClient = document.querySelector('.menu-vertical-client')
       let horizontalMenu = false // For horizontal menu
       let horizontalMenuArea // For horizontal menu area
       // Condition to check if layout is horizontal menu

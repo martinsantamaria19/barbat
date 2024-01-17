@@ -30,6 +30,9 @@
 
 @section('content')
 
+<script type="text/javascript">
+  var userCanViewOwn = {{ auth()->user()->can('view own') ? 'true' : 'false' }};
+</script>
 
 
 <div class="container-fluid">

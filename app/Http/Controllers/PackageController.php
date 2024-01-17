@@ -19,20 +19,36 @@ use Illuminate\Support\Facades\Auth;
 use App\Notifications\OrderStatusChangedNotification;
 use App\Notifications\NewOrder;
 use Illuminate\Support\Facades\Notification;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 
 
 
 class PackageController extends Controller
 {
+
   public function index()
   {
-      $packages = Package::with(['client', 'branch', 'products', 'activities', 'latestActivity' => function($query) {
+      // Comienza con una consulta general
+      $query = Package::with(['client', 'branch', 'products', 'activities', 'latestActivity' => function($query) {
           $query->latest()->first();
-      }])->get();
+      }]);
+
+      // Verifica si el usuario tiene el permiso "view own"
+      if (auth()->user()->hasPermissionTo('view own')) {
+          // Asumiendo que cada usuario está asociado con un cliente
+          $clientId = auth()->user()->client_id; // Asegúrate de que esto coincida con tu estructura de base de datos
+          $query->whereHas('client', function ($q) use ($clientId) {
+              $q->where('id', $clientId);
+          });
+      }
+
+      $packages = $query->get();
 
       return view('content.pages.packages.packages', compact('packages'));
   }
+
 
   public function show($packageId)
   {
@@ -198,26 +214,37 @@ class PackageController extends Controller
       }
   }
 
-  public function getPackagesList()
-    {
-        $packages = Package::with(['client', 'branch', 'products', 'latestActivity'])
-                            ->get()
-                            ->map(function ($package) {
-                                // Aquí puedes formatear los datos como necesites
-                                return [
-                                  'id' => $package->id,
-                                  'client' => $package->client->company_name,
-                                  'branch' => $package->branch->branch_name,
-                                  'products' => $package->products->pluck('name'),
-                                  'status' => optional($package->latestActivity)->status,
-                                  'delivery_date' => $package->delivery_date,
-                                  'priority' => $package->priority,
-                                  'label_path' => asset($package->label_path)
-                                ];
-                            });
 
-        return response()->json(['data' => $packages]);
-    }
+
+  public function getPackagesList()
+  {
+      // Comienza con una consulta general
+      $query = Package::with(['client', 'branch', 'products', 'latestActivity']);
+
+      // Verifica si el usuario tiene el permiso "view own"
+      if (auth()->user()->hasRole('cliente')) {
+        // Asumiendo que cada usuario está asociado con un cliente
+          $clientId = auth()->user()->client_id; // Asegúrate de que esto coincida con tu estructura de base de datos
+          $query->where('client_id', $clientId); // Ajusta el nombre del campo según tu esquema de base de datos
+      }
+
+      $packages = $query->get()->map(function ($package) {
+          // Aquí puedes formatear los datos como necesites
+          return [
+              'id' => $package->id,
+              'client' => $package->client->company_name,
+              'branch' => $package->branch->branch_name,
+              'products' => $package->products->pluck('name'),
+              'status' => optional($package->latestActivity)->status,
+              'delivery_date' => $package->delivery_date,
+              'priority' => $package->priority,
+              'label_path' => asset($package->label_path)
+          ];
+      });
+      
+      return response()->json(['data' => $packages]);
+  }
+
 
     public function rastreo()
     {

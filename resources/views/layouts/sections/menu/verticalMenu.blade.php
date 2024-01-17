@@ -13,7 +13,7 @@ $configData = Helper::appClasses();
       </span>
       <div class="user-data-container">
         @auth
-        <h6 class="user-data-name">{{ Auth::user()->name }}</h6>
+        <h6 class="user-data-name">{{ Auth::user()->name }} {{ Auth::user()->lastname }}</h6>
         <p class="user-data-mail">{{ Auth::user()->email }}</p>
         <p class="user-data-company">{{ Auth::user()->company ?? 'Barbat' }}</p>
         @endauth

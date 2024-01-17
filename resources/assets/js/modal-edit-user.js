@@ -1,14 +1,8 @@
-/**
- * Edit User
- */
-
 'use strict';
 
-// Select2 (jquery)
 $(function () {
+  // Inicialización de Select2
   const select2 = $('.select2');
-
-  // Select2 Country
   if (select2.length) {
     select2.each(function () {
       var $this = $(this);
@@ -20,45 +14,23 @@ $(function () {
   }
 });
 
-document.addEventListener('DOMContentLoaded', function (e) {
-  (function () {
-    // variables
-    const modalEditUserTaxID = document.querySelector('.modal-edit-tax-id');
-    const modalEditUserPhone = document.querySelector('.phone-number-mask');
-
-    // Prefix
-    if (modalEditUserTaxID) {
-      new Cleave(modalEditUserTaxID, {
-        prefix: 'TIN',
-        blocks: [3, 3, 3, 4],
-        uppercase: true
-      });
-    }
-
-    // Phone Number Input Mask
-    if (modalEditUserPhone) {
-      new Cleave(modalEditUserPhone, {
-        phone: true,
-        phoneRegionCode: 'US'
-      });
-    }
-
-    // Edit user form validation
-    FormValidation.formValidation(document.getElementById('editUserForm'), {
-      fields: {
-        modalEditUserFirstName: {
-          validators: {
-            notEmpty: {
-              message: 'Please enter your first name'
-            },
-            regexp: {
-              regexp: /^[a-zA-Zs]+$/,
-              message: 'The first name can only consist of alphabetical'
-            }
+document.addEventListener('DOMContentLoaded', function () {
+  // Validación del formulario de edición de usuario
+  FormValidation.formValidation(document.getElementById('editUserForm'), {
+    fields: {
+      modalEditUserFirstName: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter your first name'
+          },
+          regexp: {
+            regexp: /^[a-zA-Zs]+$/,
+            message: 'The first name can only consist of alphabetical'
           }
-        },
-        modalEditUserLastName: {
-          validators: {
+        }
+      },
+      modalEditUserLastName: {
+        validators: {
             notEmpty: {
               message: 'Please enter your last name'
             },
@@ -66,38 +38,71 @@ document.addEventListener('DOMContentLoaded', function (e) {
               regexp: /^[a-zA-Zs]+$/,
               message: 'The last name can only consist of alphabetical'
             }
-          }
-        },
-        modalEditUserName: {
-          validators: {
-            notEmpty: {
-              message: 'Please enter your username'
-            },
-            stringLength: {
-              min: 6,
-              max: 30,
-              message: 'The name must be more than 6 and less than 30 characters long'
-            },
-            regexp: {
-              regexp: /^[a-zA-Z0-9 ]+$/,
-              message: 'The name can only consist of alphabetical, number and space'
-            }
-          }
         }
-      },
-      plugins: {
-        trigger: new FormValidation.plugins.Trigger(),
-        bootstrap5: new FormValidation.plugins.Bootstrap5({
-          // Use this for enabling/changing valid/invalid class
-          // eleInvalidClass: '',
-          eleValidClass: '',
-          rowSelector: '.col-12'
-        }),
-        submitButton: new FormValidation.plugins.SubmitButton(),
-        // Submit the form when all fields are valid
-        // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-        autoFocus: new FormValidation.plugins.AutoFocus()
       }
-    });
-  })();
+    },
+    plugins: {
+      trigger: new FormValidation.plugins.Trigger(),
+      bootstrap5: new FormValidation.plugins.Bootstrap5({
+        eleValidClass: '',
+        rowSelector: '.col-12'
+      }),
+      submitButton: new FormValidation.plugins.SubmitButton(),
+      autoFocus: new FormValidation.plugins.AutoFocus()
+    }
+  });
+
+  // Cargar datos del usuario en el modal
+  $(document).on('click', '.edit-user-button', function() {
+    var userId = $(this).data('user-id');
+
+    $.ajax({
+      url: '/users/' + userId + '/edit',
+      type: 'GET',
+      success: function(response) {
+        var user = response.user;
+        $('#modalEditUserFirstName').val(user.name);
+        $('#modalEditUserLastName').val(user.lastname);
+        $('#modalEditUserEmail').val(user.email);
+        $('#modalEditUserPhone').val(user.phone);
+
+        // Actualizar la acción del formulario
+        $('#editUserForm').attr('action', '/users/' + userId + '/update');
+
+    // Mostrar el modal
+    $('#editUser').modal('show');
+  },
+  error: function() {
+    alert('Error al cargar la información del usuario');
+  }
+});
+});
+
+// Manejar el envío del formulario
+$('#editUserForm').on('submit', function(e) {
+e.preventDefault();
+
+var formData = $(this).serialize();
+var actionUrl = $(this).attr('action');
+
+$.ajax({
+  url: actionUrl,
+  type: 'PUT', // Asegúrate de que el método coincide con tu ruta de Laravel
+  data: formData,
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Token CSRF
+  },
+  success: function(response) {
+    // Cerrar el modal
+    $('#editUser').modal('hide');
+
+    // Opcional: Actualizar la lista de usuarios o mostrar un mensaje de éxito
+    alert('Usuario actualizado correctamente');
+  },
+  error: function(response) {
+    // Manejar los errores de validación aquí
+    alert('Error al actualizar el usuario');
+  }
+});
+});
 });

@@ -108,7 +108,7 @@
       <input type="hidden" id="editUserId" name="id">
 
       <div class="d-flex">
-        <div class="mb-3">
+        <div class="mb-3 me-2">
           <label class="form-label" for="editUserName">Nombre</label>
           <input type="text" class="form-control" id="editUserName" name="name" placeholder="Introduce el nombre" aria-label="Introduce el nombre" />
         </div>
@@ -156,6 +156,8 @@
     </form>
   </div>
 </div>
+
+
 
 @if(session('success'))
   <div class="alert alert-primary d-flex" role="alert">

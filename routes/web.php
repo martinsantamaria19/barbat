@@ -103,7 +103,10 @@ Route::middleware('auth')->group(function () {
   Route::put('/users/{id}/suspend', [UserController::class, 'suspend'])->name('user.suspend');
   Route::put('/users/{id}/activate', [UserController::class, 'activate'])->name('user.activate');
   Route::post('/delete-user/{userId}', [UserController::class, 'destroy']);
-  Route::post('/user/password/update', [UserController::class, 'updatePassword'])->name('user.password.update');
+  Route::post('/user/password/update', [UserController::class, 'updatePassword'])->name('user.password.update'); // SOLO DEL USUARIO AUTENTICADO
+  Route::post('/users/{id}/change-password', [UserController::class, 'changeUserPassword'])->name('users.change-password'); // CUALQUIER USUARIO POR ID
+
+
 
 
   // Packages
@@ -143,7 +146,6 @@ Route::middleware('auth')->group(function () {
   // Notificaciones
   Route::get('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.mark-all-read');
   Route::get('/notifications/mark-as-read/{id}', [NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
-
 
 
   // Dashboard and Profile Routes (Jetstream Routes)
