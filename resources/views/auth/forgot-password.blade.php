@@ -5,7 +5,7 @@ $customizerHidden = 'customizer-hide';
 
 @extends('layouts/blankLayout')
 
-@section('title', 'Forgot Password')
+@section('title', 'Cambio de contraseña')
 
 @section('page-style')
 <!-- Page -->
@@ -35,8 +35,8 @@ $customizerHidden = 'customizer-hide';
           </a>
         </div>
         <!-- /Logo -->
-        <h4 class="mb-2">Forgot Password? 🔒</h4>
-        <p class="mb-4">Enter your email and we'll send you instructions to reset your password</p>
+        <h4 class="mb-2">¿Olvidó su contraseña? 🔒</h4>
+        <p class="mb-4">Ingrese su correo electrónico y le enviaremos instrucciones para modificarla.</p>
 
         @if (session('status'))
         <div class="mb-1 text-success">
@@ -55,13 +55,13 @@ $customizerHidden = 'customizer-hide';
             </span>
             @enderror
           </div>
-          <button type="submit" class="btn btn-primary d-grid w-100">Send Reset Link</button>
+          <button type="submit" class="btn btn-primary d-grid w-100">Solicitar cambio</button>
         </form>
         <div class="text-center">
           @if (Route::has('login'))
           <a href="{{ route('login') }}" class="d-flex align-items-center justify-content-center">
             <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i>
-            Back to login
+            Regresar a inicio de sesión
           </a>
           @endif
         </div>

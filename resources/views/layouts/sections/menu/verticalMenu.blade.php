@@ -70,4 +70,6 @@ $configData = Helper::appClasses();
       </li>
     @endforeach
   </ul>
+
+  
 </aside>

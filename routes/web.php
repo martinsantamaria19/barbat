@@ -107,8 +107,6 @@ Route::middleware('auth')->group(function () {
   Route::post('/users/{id}/change-password', [UserController::class, 'changeUserPassword'])->name('users.change-password'); // CUALQUIER USUARIO POR ID
 
 
-
-
   // Packages
   Route::get('/packages', [PackageController::class, 'index'])->name('packages');
   Route::get('/packages-list', [PackageController::class, 'getPackagesList']);
@@ -124,7 +122,7 @@ Route::middleware('auth')->group(function () {
   // Activity
   Route::get('/package/{packageId}/activities', [ActivityController::class, 'showActivities'])->name('activities.show');
   Route::post('/activities/store', [ActivityController::class, 'store'])->name('activities.store');
-  Route::get('/activities/delivered-data', 'ActivityController@getDeliveredActivitiesData');
+  Route::get('/activities/delivered-data', [ActivityController::class, 'getDeliveredActivitiesData']);
 
 
   // Roles and Permissions

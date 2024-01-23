@@ -8,10 +8,12 @@ $permissionNamesMap = [
     'create clients'  => 'Crear clientes',
     'edit clients'    => 'Editar clientes',
     'delete clients'  => 'Eliminar clientes',
+    'create packages' => 'Crear paquetes',
     'view branches'     => 'Ver sucursales',
     'view roles'      => 'Ver roles',
     'view users'      => 'Ver usuarios',
-    'view own'        => 'Ver sus envíos'
+    'view own'        => 'Ver sus envíos',
+
 ];
 @endphp
 

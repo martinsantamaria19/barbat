@@ -60,6 +60,29 @@ class HomePage extends Controller
         $inactiveClients = Client::where('client_status', 'inactive')->count(); // Calcula el total de clientes inactivos
         $totalBranches = Branch::count(); // Calcula el total de sucursales
 
+        // PARA CLIENTES
+
+        $ownDeliveredCount = Package::whereHas('latestActivity', function ($query) {
+            $query->where('status', 'delivered');
+        })->where('client_id', $user->client_id)->count();
+
+        $ownProcessingCount = Package::whereDoesntHave('activities')
+                            ->orWhereHas('latestActivity', function ($query) {
+                                $query->where('status', 'processing');
+                            })->where('client_id', $user->client_id)->count();
+
+        $ownShippedCount = Package::whereHas('latestActivity', function ($query) {
+            $query->where('status', 'shipped');
+        })->where('client_id', $user->client_id)->count();
+
+        $userId = Auth::id(); // Obtener el ID del usuario actual
+
+        $ownLatestActivities = Activity::with(['package.branch', 'user'])
+              ->where('id', $userId)
+              ->latest()
+              ->take(10)
+              ->get();
+
         // Pasar datos a la vista
         return view('content.pages.dashboard.pages-home', [
             'deliveredCount' => $deliveredCount,
@@ -73,45 +96,10 @@ class HomePage extends Controller
             'activeClients' => $activeClients,
             'inactiveClients' => $inactiveClients,
             'totalBranches' => $totalBranches,
-        ]);
-    }
-
-    public function clientIndex() {
-        $user = Auth::user();
-        $notifications = $user->notifications;
-        // Conteo de paquetes entregados
-        $deliveredCount = Package::whereHas('latestActivity', function ($query) {
-            $query->where('status', 'delivered');
-        })->count();
-
-        // Conteo de paquetes enviados
-        $shippedCount = Package::whereHas('latestActivity', function ($query) {
-            $query->where('status', 'shipped');
-        })->count();
-
-        // Conteo de paquetes en proceso, incluyendo aquellos sin actividades
-        $processingCount = Package::whereDoesntHave('activities')
-                            ->orWhereHas('latestActivity', function ($query) {
-                                $query->where('status', 'processing');
-                            })->count();
-
-        // Obtener las últimas 5 actividades con sus relaciones necesarias
-        $latestActivities = Activity::with(['package.branch', 'user'])
-                                  ->latest()
-                                  ->take(10)
-                                  ->get();
-
-        // Obtener todos los paquetes con sus relaciones para cualquier otra lógica que necesites en la vista
-        $packages = Package::with(['client', 'branch', 'products', 'latestActivity'])->get();
-
-        // Pasar datos a la vista
-        return view('content.pages.dashboard.pages-home', [
-            'deliveredCount' => $deliveredCount,
-            'shippedCount' => $shippedCount,
-            'processingCount' => $processingCount,
-            'latestActivities' => $latestActivities,
-            'packages' => $packages,
-            'notifications' => $notifications,
+            'ownDeliveredCount' => $ownDeliveredCount,
+            'ownProcessingCount' => $ownProcessingCount,
+            'ownShippedCount' => $ownShippedCount,
+            'ownLatestActivities' => $ownLatestActivities,
         ]);
     }
 }

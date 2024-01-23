@@ -23,15 +23,6 @@ class MenuServiceProvider extends ServiceProvider
   {
     $verticalMenuJson = file_get_contents(base_path('resources/menu/verticalMenu.json'));
     $verticalMenuData = json_decode($verticalMenuJson);
-
-            // Aplicar lógica de filtrado si el usuario tiene el permiso 'view own'
-            if (Auth::check() && Auth::user()->can('view own')) {
-              $verticalMenuData = array_filter($verticalMenuData['menu'], function ($menuItem) {
-                  return in_array($menuItem['name'], ['Dashboard', 'Envios']);
-              });
-          }
-
-
     $horizontalMenuJson = file_get_contents(base_path('resources/menu/horizontalMenu.json'));
     $horizontalMenuData = json_decode($horizontalMenuJson);
 
