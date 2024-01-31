@@ -117,6 +117,7 @@ Route::middleware('auth')->group(function () {
   Route::post('/create-package', [PackageController::class, 'store'])->name('package.store');
   Route::post('/add-product-to-package', [PackageController::class, 'addProductToPackage'])->name('add-product-to-package');
   Route::post('/packages/{packageId}/change-status', [PackageController::class, 'changeStatus']);
+  Route::post('/delete-package/{packageId}', [PackageController::class, 'destroy']);
 
 
   // Activity

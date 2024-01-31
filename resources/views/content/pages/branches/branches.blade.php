@@ -65,7 +65,7 @@
       @csrf <!-- Token CSRF para seguridad en Laravel -->
 
       <div class="mb-3">
-        <label for="branchClient" class="form-label">Cliente</label>
+        <label for="branchClient" class="form-label">Cliente*</label>
         <select id="branchClient" name="branchClient" class="selectpicker w-100" data-style="btn-default" data-live-search="true">
             @foreach ($clients as $client)
                 <option value="{{ $client->id }}">{{ $client->company_name }}</option>
@@ -73,32 +73,32 @@
         </select>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="branchName">Nombre de la Sucursal</label>
-        <input type="text" class="form-control" id="branchName" placeholder="Introduce el nombre de la empresa" name="branchName" aria-label="Introduce el nombre de la empresa" />
+        <label class="form-label" for="branchName">Nombre de la Sucursal*</label>
+        <input type="text" class="form-control" id="branchName" placeholder="Introduce el nombre de la empresa" name="branchName" required aria-label="Introduce el nombre de la empresa" />
       </div>
       <div class="mb-3">
-        <label class="form-label" for="branchAddress">Dirección</label>
-        <input type="text" class="form-control" id="branchAddress" placeholder="Introduce la dirección" name="branchAddress" aria-label="Introduce la dirección" />
+        <label class="form-label" for="branchAddress">Dirección*</label>
+        <input type="text" class="form-control" id="branchAddress" placeholder="Introduce la dirección" name="branchAddress" required aria-label="Introduce la dirección" />
       </div>
       <div class="mb-3">
-        <label class="form-label" for="branchPhone">Teléfono</label>
-        <input type="text" id="branchPhone" class="form-control" placeholder="Ej: 099123456" name="branchPhone" />
+        <label class="form-label" for="branchPhone">Teléfono*</label>
+        <input type="text" id="branchPhone" class="form-control" placeholder="Ej: 099123456" name="branchPhone" required/>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="branchEmail">Email</label>
-        <input type="text" class="form-control" id="branchEmail" placeholder="Ej: empresa@empresa.com" name="branchEmail" aria-label="Introduce la dirección de correo electrónico" />
+        <label class="form-label" for="branchEmail">Email*</label>
+        <input type="text" class="form-control" id="branchEmail" placeholder="Ej: empresa@empresa.com" name="branchEmail" required aria-label="Introduce la dirección de correo electrónico" />
       </div>
       <div class="mb-3">
         <label class="form-label" for="branchRut">RUT</label>
         <input type="text" class="form-control" id="branchRut" placeholder="Introduce el RUT" name="branchRut" aria-label="Introduce el RUT" />
       </div>
       <div class="mb-3">
-        <label class="form-label" for="branchState">Departamento</label>
-        <input type="text" class="form-control" id="branchState" placeholder="Ej: Montevideo" name="branchState" aria-label="Introduce el departamento" />
+        <label class="form-label" for="branchState">Departamento*</label>
+        <input type="text" class="form-control" id="branchState" placeholder="Ej: Montevideo" name="branchState" required aria-label="Introduce el departamento" />
       </div>
       <div class="mb-3">
-        <label class="form-label" for="branchCity">Localidad</label>
-        <input type="text" class="form-control" id="branchCity" placeholder="Ej: Centro" name="branchCity" aria-label="John Doe" />
+        <label class="form-label" for="branchCity">Localidad*</label>
+        <input type="text" class="form-control" id="branchCity" placeholder="Ej: Centro" name="branchCity" required aria-label="John Doe" />
       </div>
       <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Crear Sucursal</button>
       <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancelar</button>
@@ -186,8 +186,6 @@
           <th>Localidad</th>
           <th>Estado</th>
           <th>Acciones</th>
-
-
         </tr>
       </thead>
     </table>

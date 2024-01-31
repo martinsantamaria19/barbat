@@ -62,6 +62,7 @@ class OrderStatusChangedNotification extends Notification
             'title' => "Envío {$statusMessage} a {$clientCompanyName} - {$clientBranchName}",
             'message' => "El estado del envío #{$this->package->id} ha cambiado a {$statusMessage}.",
             'status' => $this->status,
+            'type' => 'order_status_changed',
         ];
     }
 

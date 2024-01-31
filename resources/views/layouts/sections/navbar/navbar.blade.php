@@ -50,17 +50,17 @@ $navbarDetached = ($navbarDetached ?? '');
           <ul class="dropdown-menu dropdown-menu-start dropdown-styles">
             <li>
               <a class="dropdown-item" href="javascript:void(0);" data-theme="light">
-                <span class="align-middle"><i class='bx bx-sun me-2'></i>Light</span>
+                <span class="align-middle"><i class='bx bx-sun me-2'></i>Claro</span>
               </a>
             </li>
             <li>
               <a class="dropdown-item" href="javascript:void(0);" data-theme="dark">
-                <span class="align-middle"><i class="bx bx-moon me-2"></i>Dark</span>
+                <span class="align-middle"><i class="bx bx-moon me-2"></i>Oscuro</span>
               </a>
             </li>
             <li>
               <a class="dropdown-item" href="javascript:void(0);" data-theme="system">
-                <span class="align-middle"><i class="bx bx-desktop me-2"></i>System</span>
+                <span class="align-middle"><i class="bx bx-desktop me-2"></i>Sistema</span>
               </a>
             </li>
           </ul>
@@ -133,7 +133,12 @@ $navbarDetached = ($navbarDetached ?? '');
                                 <div class="flex-shrink-0 me-3">
                                     <div class="avatar">
                                         {{-- Puedes personalizar el avatar según el tipo de notificación --}}
-                                        <img src="{{ asset('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle">
+                                        @if($notification->type == 'App\Notifications\NewOrder')
+                                            <img src="{{ asset('assets/img/icons/custom/check-regular-24.png') }}" alt="Check" class="rounded">
+                                        @else
+                                            <img src="{{ asset('assets/img/icons/custom/success-truck.png') }}" alt="Truck" class="rounded">
+                                        @endif
+
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
@@ -165,7 +170,7 @@ $navbarDetached = ($navbarDetached ?? '');
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
-              <a class="dropdown-item" href="/profile">
+              <a class="dropdown-item" href="{{ route('settings.my-account')}}">
                 <div class="d-flex">
                   <div class="flex-shrink-0 me-3">
                     <div class="avatar avatar-online">

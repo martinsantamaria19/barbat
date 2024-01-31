@@ -57,6 +57,7 @@ class NewOrder extends Notification
           'title' => "Nuevo envío para {$clientCompanyName} - {$clientBranchName}",
           'message' => "Se ha creado el envío #{$this->package->id}",
           'status' => $this->status,
+          'type' => 'new_package',
       ];
   }
 }

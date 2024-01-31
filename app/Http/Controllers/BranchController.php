@@ -68,5 +68,12 @@ class BranchController extends Controller
     return back()->with('success', 'Sucursal actualizada correctamente.');
   }
 
+  public function destroy($branchId)
+  {
+    $branch = Branch::findOrFail($branchId);
+    $branch->delete();
+    return response()->json(['success' => true]);
+  }
+
 
 }

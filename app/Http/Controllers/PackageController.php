@@ -241,7 +241,7 @@ class PackageController extends Controller
               'label_path' => asset($package->label_path)
           ];
       });
-      
+
       return response()->json(['data' => $packages]);
   }
 
@@ -274,6 +274,13 @@ class PackageController extends Controller
             // Si no se encuentra el paquete, redirige o muestra un mensaje de error
             return back()->with('error', 'Código de rastreo no encontrado.');
         }
-  }
+    }
+
+    public function destroy($packageId)
+    {
+        $package = Package::findOrFail($packageId);
+        $package->delete();
+        return redirect()->back()->with('success', 'Paquete eliminado correctamente.');
 
     }
+}
