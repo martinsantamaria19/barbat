@@ -44,28 +44,27 @@
             </table>
           </div>
         </div>
-        @if ($activity->status == 'delivered')
+        @can('edit status')
+          @if ($activity->status == 'delivered')
 
-        @elseif($activity->status == 'shipped')
-          <form action="{{ url('/packages/' . $package->id . '/change-status') }}" method="POST">
-            @csrf
-            <input type="hidden" name="status" value="delivered">
-            <div class="text-center">
-              <button type="submit" class="btn btn-primary mt-5">Marcar como Entregado</button>
-            </div>
-          </form>
-        @else
-          <form action="{{ url('/packages/' . $package->id . '/change-status') }}" method="POST">
-            @csrf
-            <input type="hidden" name="status" value="shipped">
-            <div class="text-center">
-              <button type="submit" class="btn btn-primary mt-5">Marcar como En Camino</button>
-            </div>
-          </form>
-        @endif
-
-
-
+          @elseif($activity->status == 'shipped')
+            <form action="{{ url('/packages/' . $package->id . '/change-status') }}" method="POST">
+              @csrf
+              <input type="hidden" name="status" value="delivered">
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary mt-5">Marcar como Entregado</button>
+              </div>
+            </form>
+          @else
+            <form action="{{ url('/packages/' . $package->id . '/change-status') }}" method="POST">
+              @csrf
+              <input type="hidden" name="status" value="shipped">
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary mt-5">Marcar como En Camino</button>
+              </div>
+            </form>
+          @endif
+        @endcan
       </div>
     </div>
   </div>
@@ -152,6 +151,9 @@
                     @if($deliveredActivity)
                         <h6 class="mb-1">Entregado por <strong>{{ $deliveredActivity->user->name }} {{ $deliveredActivity->user->lastname }}</strong></h6>
                         <p class="text-muted mb-0">{{ $deliveredActivity->created_at->format('d/m/Y')}} - {{ $deliveredActivity->created_at->format('H:i')}}hs.</p>
+                        <br>
+                        <h6 class="mb-1">Recibido por <strong>{{ $receiver->name }} {{ $receiver->lastname }}</strong></h6>
+                        <p class="text-muted mb-0">CI: {{ $receiver->cedula }}</p>
                     @else
                         <p class="text-muted mb-0">Aún no entregado - Entrega estimada: {{ Carbon\Carbon::parse($package->delivery_date)->format('d/m/Y') }}</p>
                     @endif

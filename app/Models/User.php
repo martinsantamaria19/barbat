@@ -14,38 +14,32 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use App\Notifications\ResetPasswordNotification;
 
-
-
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasProfilePhoto, HasTeams, Notifiable, TwoFactorAuthenticatable, HasRoles;
+  use HasApiTokens, HasFactory, HasProfilePhoto, HasTeams, Notifiable, TwoFactorAuthenticatable, HasRoles;
 
-    protected $fillable = [
-        'name', 'lastname', 'email', 'password', 'company', 'status', 'phone',
-    ];
+  protected $fillable = ['name', 'lastname', 'email', 'password', 'company', 'status', 'phone'];
 
-    protected $hidden = [
-        'password', 'remember_token', 'two_factor_recovery_codes', 'two_factor_secret',
-    ];
+  protected $hidden = ['password', 'remember_token', 'two_factor_recovery_codes', 'two_factor_secret'];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+  protected $casts = [
+    'email_verified_at' => 'datetime',
+  ];
 
-    protected $appends = [
-        'profile_photo_url',
-    ];
+  protected $appends = ['profile_photo_url'];
 
-    public function notificationSettings()
-    {
-        return $this->hasMany(NotificationSetting::class);
-    }
+  public function notificationSettings()
+  {
+    return $this->hasMany(NotificationSetting::class);
+  }
 
-    public function sendPasswordResetNotification($token)
-    {
-        $this->notify(new ResetPasswordNotification($token));
-    }
+  public function sendPasswordResetNotification($token)
+  {
+    $this->notify(new ResetPasswordNotification($token));
+  }
 
-
-
+  public function client()
+  {
+    return $this->belongsTo(Client::class, 'company', 'id');
+  }
 }

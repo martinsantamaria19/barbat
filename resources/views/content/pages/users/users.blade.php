@@ -61,7 +61,7 @@
             <option value="" disabled selected>Selecciona la empresa</option>
             <option value="Barbat">Barbat</option>
             @foreach($clients as $client)
-                <option value="{{ $client->company_name }}">{{ $client->company_name }}</option>
+                <option value="{{ $client->id }}">{{ $client->company_name }}</option>
             @endforeach
         </select>
       </div>

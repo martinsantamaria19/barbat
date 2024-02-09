@@ -4,6 +4,11 @@
 
 @section('page-script')
 <script src="{{asset('assets/js/custom-js/packages.js')}}"></script>
+<script src="{{asset('assets/js/custom-js/packagesClient.js')}}"></script>
+@endsection
+
+@section('meta')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
 @section('vendor-style')
@@ -55,7 +60,8 @@
     @endif
     <div class="card">
       <div class="card-datatable table-responsive">
-        <table id="packagesTable" class="table">
+        @role('Cliente')
+        <table id="packagesTableClient" class="table">
           <thead>
               <tr>
                   <th>ID</th>
@@ -65,9 +71,23 @@
                   <th>Estado Actual</th>
                   <th>Prioridad</th>
                   <th>Descargar Etiqueta</th>
-                  <th>Acciones</th>
               </tr>
           </thead>
+          @else
+          <table id="packagesTable" class="table">
+          <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Sucursal</th>
+                <th>Productos</th>
+                <th>Estado Actual</th>
+                <th>Prioridad</th>
+                <th>Descargar Etiqueta</th>
+                <th>Acciones</th>
+            </tr>
+          </thead>
+          @endrole
           <tbody>
 
           </tbody>
@@ -165,32 +185,6 @@
     });
   });
 </script> --}}
-
-<script>
-  $(document).ready(function() {
-      $('.change-status').click(function(e) {
-          e.preventDefault();
-          var packageId = $(this).data('package-id');
-          var newStatus = $(this).data('new-status');
-
-          $.ajax({
-              url: 'packages/' + packageId + '/change-status',
-              type: 'POST',
-              data: {
-                  status: newStatus,
-                  _token: '{{ csrf_token() }}'
-              },
-              success: function(response) {
-                  alert('Estado actualizado.');
-                  location.reload(); // Recargar la página para actualizar el estado visualmente
-              },
-              error: function(response) {
-                  alert('Error al actualizar el estado.');
-              }
-          });
-      });
-  });
-  </script>
 
 
 @endsection

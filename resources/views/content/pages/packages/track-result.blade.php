@@ -22,11 +22,8 @@
 @section('content')
 <div class="d-flex align-items-center justify-content-center min-vh-100">
   <div class="card p-3 col-10 col-md-4">
-    <div class="app-brand justify-content-start">
-      <a href="{{url('/')}}" class="app-brand-link gap-2">
-        <span class="app-brand-logo demo">@include('_partials.macros',["width"=>25,"withbg"=>'var(--bs-primary)'])</span>
-        <span class="app-brand-text demo text-body fw-bold">{{config('variables.templateName')}}</span>
-      </a>
+    <div class="app-brand justify-content-center">
+      <img src="./assets/img/branding/logo.png" class="app-brand-logo demo" alt="">
     </div>
     <h3 class="text-center pt-2 pb-4">Rastreo de Envío</h3>
     <h5 class="text-center mb-0"><strong>{{$package->client->company_name}} - {{$package->branch->branch_name}}</strong></h5>
@@ -73,7 +70,8 @@
         @switch($activity->status)
             @case('delivered')
             <h3 class="mb-0"><strong class="text-success">Envío Entregado</strong></h3>
-              <p>{{ $activity->created_at->format('d/m/Y H:i') }} hs.</p>
+            <p class="mt-2 mb-0">Recibió: <br> <strong>{{$receiver->name}} {{$receiver->lastname}} - CI: {{$receiver->cedula}}</strong></p>
+              <p class="p-0 m-0">{{ $activity->created_at->format('d/m/Y H:i') }} hs.</p>
             @break
             @case('shipped')
             <h3><strong class="text-success">Envío En Camino</strong></h3>

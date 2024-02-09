@@ -20,9 +20,6 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SettingsController;
 
-
-
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,7 +35,7 @@ use App\Http\Controllers\SettingsController;
 
 Route::get('/rastreo', [PackageController::class, 'rastreo'])->name('rastreo');
 Route::get('/track-package', [PackageController::class, 'trackPackage'])->name('track-package');
-
+Route::get('/package/{packageId}', [PackageController::class, 'show'])->name('package.show');
 
 // Grupo de rutas que requieren autenticación
 Route::middleware('auth')->group(function () {
@@ -56,7 +53,9 @@ Route::middleware('auth')->group(function () {
   Route::get('/product-categories', [ProductCategoryController::class, 'index'])->name('product-categories');
   Route::get('/product-categories-list', [ProductCategoryController::class, 'getProductCategoriesList']);
   Route::post('/create-product-category', [ProductCategoryController::class, 'store']);
-  Route::post('/product-categories/{categoryId}/update', [ProductCategoryController::class, 'update'])->name('product-categories.update');
+  Route::post('/product-categories/{categoryId}/update', [ProductCategoryController::class, 'update'])->name(
+    'product-categories.update'
+  );
   Route::post('/product-categories/{id}/delete', [ProductCategoryController::class, 'delete']);
 
   // Products
@@ -68,11 +67,11 @@ Route::middleware('auth')->group(function () {
   Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
   Route::put('/products/{id}/update', [ProductController::class, 'update'])->name('products.update');
   Route::post('/delete-product/{productId}', [ProductController::class, 'destroy']);
+  Route::get('/products/re-stock', [ProductController::class, 'reStock'])->name('products.re-stock');
 
   // Activity
   Route::get('/activity', [ActivityController::class, 'index'])->name('activity');
   Route::get('/activity-list', [ActivityController::class, 'getActivityList']);
-
 
   // Clients
   Route::get('/clients', [ClientController::class, 'index'])->name('clients');
@@ -82,7 +81,6 @@ Route::middleware('auth')->group(function () {
   Route::get('/clients/{id}/edit', [ClientController::class, 'edit'])->name('clients.edit');
   Route::put('/clients/{id}/update', [ClientController::class, 'update'])->name('clients.update');
   Route::post('/delete-client/{clientId}', [ClientController::class, 'destroy']);
-
 
   // Branches
   Route::get('/branches', [BranchController::class, 'index'])->name('branches');
@@ -104,27 +102,28 @@ Route::middleware('auth')->group(function () {
   Route::put('/users/{id}/activate', [UserController::class, 'activate'])->name('user.activate');
   Route::post('/delete-user/{userId}', [UserController::class, 'destroy']);
   Route::post('/user/password/update', [UserController::class, 'updatePassword'])->name('user.password.update'); // SOLO DEL USUARIO AUTENTICADO
-  Route::post('/users/{id}/change-password', [UserController::class, 'changeUserPassword'])->name('users.change-password'); // CUALQUIER USUARIO POR ID
-
+  Route::post('/users/{id}/change-password', [UserController::class, 'changeUserPassword'])->name(
+    'users.change-password'
+  ); // CUALQUIER USUARIO POR ID
 
   // Packages
   Route::get('/packages', [PackageController::class, 'index'])->name('packages');
   Route::get('/packages-list', [PackageController::class, 'getPackagesList']);
   Route::get('/add-package', [PackageController::class, 'create'])->name('add-package');
-  Route::get('/package/{packageId}', [PackageController::class, 'show'])->name('package.show');
   Route::get('/package/{packageId}/qr-code', [PackageController::class, 'showQrCode'])->name('package.qr-code');
   Route::get('/package/{packageId}/label', [PackageController::class, 'showLabel'])->name('package.label');
   Route::post('/create-package', [PackageController::class, 'store'])->name('package.store');
   Route::post('/add-product-to-package', [PackageController::class, 'addProductToPackage'])->name('add-product-to-package');
   Route::post('/packages/{packageId}/change-status', [PackageController::class, 'changeStatus']);
   Route::post('/delete-package/{packageId}', [PackageController::class, 'destroy']);
-
+  Route::post('/packages/{packageId}/save-receiver', [PackageController::class, 'saveReceiver'])->name(
+    'packages.saveReceiver'
+  );
 
   // Activity
   Route::get('/package/{packageId}/activities', [ActivityController::class, 'showActivities'])->name('activities.show');
   Route::post('/activities/store', [ActivityController::class, 'store'])->name('activities.store');
   Route::get('/activities/delivered-data', [ActivityController::class, 'getDeliveredActivitiesData']);
-
 
   // Roles and Permissions
   Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
@@ -139,19 +138,23 @@ Route::middleware('auth')->group(function () {
   Route::get('/settings/notifications', [SettingsController::class, 'notifications'])->name('settings.notifications');
   Route::get('/settings/security', [SettingsController::class, 'security'])->name('settings.security');
   Route::get('/settings/my-account', [SettingsController::class, 'myAccount'])->name('settings.my-account');
-  Route::put('/settings/notifications/update', [SettingsController::class, 'updateNotifications'])->name('settings.notifications.update');
-
+  Route::put('/settings/notifications/update', [SettingsController::class, 'updateNotifications'])->name(
+    'settings.notifications.update'
+  );
 
   // Notificaciones
-  Route::get('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.mark-all-read');
-  Route::get('/notifications/mark-as-read/{id}', [NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
-
+  Route::get('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name(
+    'notifications.mark-all-read'
+  );
+  Route::get('/notifications/mark-as-read/{id}', [NotificationController::class, 'markAsRead'])->name(
+    'notifications.mark-as-read'
+  );
 
   // Dashboard and Profile Routes (Jetstream Routes)
   Route::get('/dashboard', function () {
-      return view('dashboard');
+    return view('dashboard');
   })->name('dashboard');
   Route::get('/profile', function () {
-      return view('profile.show');
+    return view('profile.show');
   })->name('profile.show');
 });

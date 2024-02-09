@@ -102,12 +102,17 @@ class Package extends Model
     }
 
     public function activities()
-  {
+    {
     return $this->hasMany(Activity::class);
-  }
+    }
 
-  public function latestActivity()
+    public function latestActivity()
     {
         return $this->hasOne(Activity::class)->latestOfMany();
     }
+
+    public function receiver()
+  {
+    return $this->hasOne(Receiver::class);
+  }
 }

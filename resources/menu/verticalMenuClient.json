@@ -4,11 +4,7 @@
       "url": "/",
       "name": "Dashboard",
       "icon": "menu-icon tf-icons bx bx-home-circle",
-      "slug": "pages-home",
-      "roles": [
-        "Administrador",
-        "Cliente"
-      ]
+      "slug": "pages-home"
     },
     {
       "url": "/products",
@@ -18,9 +14,6 @@
         "products",
         "product-categories",
         "add-product"
-      ],
-      "roles": [
-        "Administrador"
       ],
       "submenu": [
         {
@@ -46,63 +39,12 @@
       ]
     },
     {
-      "url": "/activity",
-      "name": "Envios",
-      "icon": "menu-icon tf-icons bx bx-git-compare",
-      "slug": [
-        "activity",
-        "add-package",
-        "packages"
-      ],
-      "roles": [
-        "Administrador"
-      ],
-      "submenu": [
-        {
-          "url": "/packages",
-          "name": "Todos los envíos",
-          "slug": "packages"
-        },
-        {
-          "url": "/add-package",
-          "name": "Crear Envío",
-          "slug": "add-package"
-        },
-        {
-          "url": "/activity",
-          "name": "Ver Actividad",
-          "slug": "activity"
-        }
-      ]
-    },
-    {
-      "url": "/packages",
-      "name": "Envios",
-      "icon": "menu-icon tf-icons bx bx-package",
-      "slug": "packages",
-      "roles": [
-        "Cliente"
-      ]
-    },
-    {
-      "url": "/activity",
-      "name": "Actividad",
-      "icon": "menu-icon tf-icons bx bx-git-compare",
-      "slug": "activity",
-      "roles": [
-        "Cliente"
-      ]
-    },
-    {
       "url": "/clients",
       "name": "Clientes",
       "icon": "menu-icon tf-icons bx bx-user",
       "slug": [
         "clients",
         "branches"
-      ],
-      "roles": [
-        "Administrador"
       ],
       "submenu": [
         {
@@ -124,9 +66,6 @@
       "slug": [
         "users",
         "roles"
-      ],
-      "roles": [
-        "Administrador"
       ],
       "submenu": [
         {
