@@ -14,5 +14,6 @@ class Receiver extends Model
       'name',
       'lastname',
       'cedula',
+      'image',
   ];
 }

@@ -64,6 +64,7 @@ class ProductController extends Controller
       $product->description = $request->input('description');
       $product->stock = is_null($request->input('stock')) ? 0 : $request->input('stock');
       $product->status = $request->input('status');
+      $product->price = $request->input('productPrice');
 
       // Manejar la carga de la imagen
       if ($request->hasFile('file')) {

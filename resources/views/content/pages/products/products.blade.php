@@ -41,6 +41,7 @@
           <th>Categoría</th>
           <th>Descripción</th>
           <th>Stock</th>
+          <th>Precio</th>
           <th>Estado</th>
           <th>Acciones</th>
         </tr>

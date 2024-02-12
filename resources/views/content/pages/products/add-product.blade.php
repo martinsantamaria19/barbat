@@ -75,6 +75,11 @@
               <input type="number" class="form-control" id="productSku" placeholder="SKU" name="productSku" aria-label="Product SKU">
             </div>
           </div>
+          <div class="row mb-3">
+            <div class="col"><label class="form-label" for="productPrice">Precio</label>
+              <input type="number" class="form-control" id="productPrice" placeholder="Precio" name="productPrice" aria-label="Product Price">
+            </div>
+          </div>
           <!-- Description -->
           <div>
             <label class="form-label" for="description">Descripción <span class="text-muted">(Opcional)</span></label>

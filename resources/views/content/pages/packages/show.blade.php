@@ -154,7 +154,8 @@
                         <br>
                         <h6 class="mb-1">Recibido por <strong>{{ $receiver->name }} {{ $receiver->lastname }}</strong></h6>
                         <p class="text-muted mb-0">CI: {{ $receiver->cedula }}</p>
-                    @else
+                        <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#enableOTP"> Ver imagen </button>
+                        @else
                         <p class="text-muted mb-0">Aún no entregado - Entrega estimada: {{ Carbon\Carbon::parse($package->delivery_date)->format('d/m/Y') }}</p>
                     @endif
                 </div>
@@ -171,11 +172,27 @@
   </div>
 </div>
 
+@include('_partials/_modals/modal-image')
+
 <script>
   document.getElementById('backButton').addEventListener('click', function() {
     history.back();
 });
 
 </script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+      $('a[data-toggle="modal"]').click(function() {
+          var imageSrc = $(this).attr('data-image');
+          $('#imageInModal').attr('src', imageSrc);
+          $('#imageModal').modal('show');
+      });
+  });
+  </script>
+
 
 @endsection

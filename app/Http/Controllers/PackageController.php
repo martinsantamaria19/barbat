@@ -304,12 +304,13 @@ class PackageController extends Controller
   }
 
   public function saveReceiver(Request $request, $packageId)
-  {
+{
     // Validación de los datos del receptor
     $request->validate([
-      'name' => 'required|string|max:255',
-      'lastname' => 'required|string|max:255',
-      'cedula' => 'required|string|max:255',
+        'name' => 'required|string|max:255',
+        'lastname' => 'required|string|max:255',
+        'cedula' => 'required|string|max:255',
+        'image' => 'required|image',
     ]);
 
     // Obtener el paquete al que quieres asociar el receptor
@@ -317,15 +318,29 @@ class PackageController extends Controller
 
     // Verificar si el paquete existe
     if (!$package) {
-      return response()->json(['message' => 'El paquete no fue encontrado'], 404);
+        return response()->json(['message' => 'El paquete no fue encontrado'], 404);
+    }
+
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $filename = time() . '_' . $image->getClientOriginalName();
+        $destinationPath = public_path('/assets/img/receivers');
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0777, true);
+        }
+        $image->move($destinationPath, $filename);
+        $imagePath = 'assets/img/receivers/' . $filename;
+    } else {
+        return response()->json(['message' => 'La imagen es obligatoria'], 400);
     }
 
     // Crear una instancia del receptor con los datos de la solicitud
     $receiver = new Receiver([
-      'package_id' => $package->id,
-      'name' => $request->input('name'),
-      'lastname' => $request->input('lastname'),
-      'cedula' => $request->input('cedula'),
+        'package_id' => $package->id,
+        'name' => $request->input('name'),
+        'lastname' => $request->input('lastname'),
+        'cedula' => $request->input('cedula'),
+        'image' => $imagePath, // Ajustado para coincidir con el nombre de la columna de la base de datos
     ]);
 
     // Asociar el receptor con el paquete
@@ -334,4 +349,5 @@ class PackageController extends Controller
     // Opcionalmente, puedes devolver una respuesta JSON indicando el éxito de la operación
     return response()->json(['message' => 'Receptor asociado correctamente al paquete'], 200);
   }
+
 }
