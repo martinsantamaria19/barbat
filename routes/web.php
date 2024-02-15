@@ -68,6 +68,10 @@ Route::middleware('auth')->group(function () {
   Route::put('/products/{id}/update', [ProductController::class, 'update'])->name('products.update');
   Route::post('/delete-product/{productId}', [ProductController::class, 'destroy']);
   Route::get('/products/re-stock', [ProductController::class, 'reStock'])->name('products.re-stock');
+  Route::post('/products/processRestock', [ProductController::class, 'processRestock'])->name(
+    'products.processRestock'
+  );
+  Route::get('/get-products-for-return/{clientId}/{branchId}', [ProductController::class, 'getProductsForReturn']);
 
   // Activity
   Route::get('/activity', [ActivityController::class, 'index'])->name('activity');
@@ -90,6 +94,8 @@ Route::middleware('auth')->group(function () {
   Route::get('branches/{id}/edit', [BranchController::class, 'edit'])->name('branches.edit');
   Route::put('branches/{id}/update', [BranchController::class, 'update'])->name('branches.update');
   Route::post('/delete-branch/{branchId}', [BranchController::class, 'destroy']);
+  Route::get('/branches/{branchId}', [BranchController::class, 'show'])->name('branch.show');
+  Route::get('/branches/{branchId}/stock', [BranchController::class, 'showStock'])->name('branch.stock');
 
   // Users
   Route::get('/users', [UserController::class, 'index'])->name('users');
@@ -105,6 +111,7 @@ Route::middleware('auth')->group(function () {
   Route::post('/users/{id}/change-password', [UserController::class, 'changeUserPassword'])->name(
     'users.change-password'
   ); // CUALQUIER USUARIO POR ID
+  Route::get('/user-permissions', [UserController::class, 'getUserPermissions'])->name('user-permissions');
 
   // Packages
   Route::get('/packages', [PackageController::class, 'index'])->name('packages');
@@ -113,7 +120,9 @@ Route::middleware('auth')->group(function () {
   Route::get('/package/{packageId}/qr-code', [PackageController::class, 'showQrCode'])->name('package.qr-code');
   Route::get('/package/{packageId}/label', [PackageController::class, 'showLabel'])->name('package.label');
   Route::post('/create-package', [PackageController::class, 'store'])->name('package.store');
-  Route::post('/add-product-to-package', [PackageController::class, 'addProductToPackage'])->name('add-product-to-package');
+  Route::post('/add-product-to-package', [PackageController::class, 'addProductToPackage'])->name(
+    'add-product-to-package'
+  );
   Route::post('/packages/{packageId}/change-status', [PackageController::class, 'changeStatus']);
   Route::post('/delete-package/{packageId}', [PackageController::class, 'destroy']);
   Route::post('/packages/{packageId}/save-receiver', [PackageController::class, 'saveReceiver'])->name(

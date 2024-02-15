@@ -14,9 +14,6 @@
 <script src="{{asset('assets/vendor/libs/select2/select2.js')}}"></script>
 @endsection
 
-@section('page-script')
-<script src="{{asset('assets/js/custom-js/activity.js')}}"></script>
-@endsection
 
 @section('content')
 
@@ -116,70 +113,59 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
         </div>
         <ul class="p-0 m-0">
-          @foreach($latestActivities as $activity)
-            @if($activity->package->client->id == auth()->user()->client->id)
-              <li class="d-flex mb-4 pb-1 border-bottom">
-                <div class="avatar flex-shrink-0 me-3">
-                  @switch($activity->status)
-                    @case('delivered')
-                      <img src="{{asset('assets/img/icons/custom/check-regular-24.png')}}" alt="Check" class="rounded">
-                      @break
-                    @case('shipped')
-                      <img src="{{asset('assets/img/icons/custom/success-truck.png')}}" alt="Truck" class="rounded">
-                      @break
-                    @case('processing')
-                      <img src="{{asset('assets/img/icons/custom/warning-clock.png')}}" alt="Clock" class="rounded">
-                      @break
-                    @default
-                      <img src="{{asset('assets/img/icons/custom/warning-clock.png')}}" alt="Clock" class="rounded">
-                  @endswitch
+          @forelse($latestActivities as $activity)
+            <li class="d-flex mb-4 pb-1 border-bottom">
+              <div class="avatar flex-shrink-0 me-3">
+                @switch($activity->status)
+                  @case('delivered')
+                    <img src="{{asset('assets/img/icons/custom/check-regular-24.png')}}" alt="Check" class="rounded">
+                    @break
+                  @case('shipped')
+                    <img src="{{asset('assets/img/icons/custom/success-truck.png')}}" alt="Truck" class="rounded">
+                    @break
+                  @case('processing')
+                    <img src="{{asset('assets/img/icons/custom/warning-clock.png')}}" alt="Clock" class="rounded">
+                    @break
+                  @default
+                    <img src="{{asset('assets/img/icons/custom/warning-clock.png')}}" alt="Clock" class="rounded">
+                @endswitch
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                <div class="me-2">
+                  <small class="text-muted">{{ $activity->package->client->company_name }} - {{ $activity->package->branch->branch_name }}</small>
+                  <h6 class="mb-0">
+                    #{{$activity->package->id}} -
+                    @switch($activity->status)
+                        @case('delivered') Entregado @break
+                        @case('shipped') En Camino @break
+                        @case('processing') En Proceso @break
+                        @default {{ ucfirst($activity->status) }}
+                    @endswitch
+                  </h6>
                 </div>
-                <div>
+                <div class="row text-end user-progress">
+                  <small class="fw-medium activity-user">{{ $activity->created_at->format('d/m/Y')}} - {{ $activity->created_at->format('H:i')}}hs.</small>
+                  <small class="fw-medium activity-user">
+                    @switch($activity->status)
+                      @case('processing') Creado por @break
+                      @case('shipped') Actualizado por @break
+                      @default Entregado por
+                    @endswitch
+                    <strong>{{ $activity->user->name }}</strong>
+                  </small>
                 </div>
-                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                  <div class="me-2">
-                    <small class="text-muted">{{ $activity->package->client->company_name }} - {{ $activity->package->branch->branch_name }}</small>
-                    <h6 class="mb-0">
-                      @switch($activity->status)
-                          @case('delivered')
-                          #{{$activity->package->id}} - Entregado
-                              @break
-                          @case('shipped')
-                          #{{$activity->package->id}} - En Camino
-                              @break
-                          @case('processing')
-                          #{{$activity->package->id}} - En Proceso
-                              @break
-                          @default
-                              {{ $activity->status }}
-                      @endswitch
-                    </h6>
-                  </div>
-                  <div class="row text-end user-progress">
-                    <small class="fw-medium activity-user">{{ $activity->created_at->format('d/m/Y')}} - {{ $activity->created_at->format('H:i')}}hs.</small>
-                    <small class="fw-medium activity-user">
-                      @switch($activity->status)
-                        @case('processing')
-                          Creado por <strong>{{ $activity->user->name }}</strong>
-                          @break
-                        @case('shipped')
-                          Actualizado por <strong>{{ $activity->user->name }}</strong>
-                          @break
-                        @default
-                          Entregado por <strong>{{ $activity->user->name }}</strong>
-                      @endswitch
-                    </small>
-                  </div>
-                </div>
-              </li>
-            @endif
-          @endforeach
+              </div>
+            </li>
+          @empty
+            <li>No hay actividades recientes.</li>
+          @endforelse
         </ul>
       </div>
     </div>
   </div>
 </div>
 <!--/ Últimos movimientos para Cliente -->
+
 
 @endrole
 

@@ -8,12 +8,21 @@ $permissionNamesMap = [
     'create clients'  => 'Crear clientes',
     'edit clients'    => 'Editar clientes',
     'delete clients'  => 'Eliminar clientes',
-    'create packages' => 'Crear paquetes',
     'view branches'     => 'Ver sucursales',
     'view roles'      => 'Ver roles',
     'view users'      => 'Ver usuarios',
-    'view own'        => 'Ver sus envíos',
-
+    'edit status'     => 'Editar estado',
+    'view own clients' => 'Ver clientes propios',
+    'view dashboard'   => 'Ver dashboard',
+    'make re-stock'    => 'Crear devoluciones',
+    'view product categories' => 'Ver categorías de productos',
+    'view packages'    => 'Ver envíos',
+    'view activities'  => 'Ver actividades',
+    'create branches'  => 'Crear sucursales',
+    'edit branches'    => 'Editar sucursales',
+    'delete branches'  => 'Eliminar sucursales',
+    'view own'         => 'Ver propios',
+    'create packages'  => 'Crear envíos',
 ];
 @endphp
 

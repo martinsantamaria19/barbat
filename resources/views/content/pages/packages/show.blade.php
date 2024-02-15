@@ -48,13 +48,12 @@
           @if ($activity->status == 'delivered')
 
           @elseif($activity->status == 'shipped')
-            <form action="{{ url('/packages/' . $package->id . '/change-status') }}" method="POST">
-              @csrf
-              <input type="hidden" name="status" value="delivered">
-              <div class="text-center">
-                <button type="submit" class="btn btn-primary mt-5">Marcar como Entregado</button>
-              </div>
-            </form>
+          @if($activity->status == 'shipped')
+            <div class="text-center">
+              <button id="markAsDeliveredBtn" class="btn btn-primary mt-5" data-package-id="{{ $package->id }}">Marcar como Entregado</button>
+            </div>
+          @endif
+
           @else
             <form action="{{ url('/packages/' . $package->id . '/change-status') }}" method="POST">
               @csrf
@@ -172,7 +171,9 @@
   </div>
 </div>
 
-@include('_partials/_modals/modal-image')
+@if($receiver)
+  @include('_partials/_modals/modal-image')
+@endif
 
 <script>
   document.getElementById('backButton').addEventListener('click', function() {
@@ -191,6 +192,110 @@
           $('#imageInModal').attr('src', imageSrc);
           $('#imageModal').modal('show');
       });
+  });
+  </script>
+
+<script>
+  $(document).ready(function() {
+      // Suponiendo que 'markAsDeliveredBtn' es el botón para marcar como entregado
+      $('#markAsDeliveredBtn').click(function(e) {
+      e.preventDefault();
+      var packageId = $(this).data('package-id'); // Lee el valor del atributo data-package-id
+
+      if (packageId) {
+          Swal.fire({
+                title: 'Confirmar entrega',
+              text: "¿Estás seguro de marcar este paquete como entregado?",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Sí, marcar como entregado',
+              cancelButtonText: 'Cancelar'
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  solicitarDatosReceptor(packageId);
+              }
+          });
+        } else {
+        console.error('El ID del paquete no está definido.');
+    }
+      });
+
+      function solicitarDatosReceptor(packageId) {
+          Swal.fire({
+              title: 'Datos del receptor',
+              html: `
+                  <input type="text" id="name" class="swal2-input" placeholder="Nombre">
+                  <input type="text" id="lastname" class="swal2-input" placeholder="Apellido">
+                  <input type="text" id="cedula" class="swal2-input" placeholder="Cédula">
+                  <input type="file" id="image" class="swal2-input">`,
+              focusConfirm: false,
+              preConfirm: () => {
+                  const name = Swal.getPopup().querySelector('#name').value;
+                  const lastname = Swal.getPopup().querySelector('#lastname').value;
+                  const cedula = Swal.getPopup().querySelector('#cedula').value;
+                  const image = Swal.getPopup().querySelector('#image').files[0];
+                  if (!name || !lastname || !cedula || !image) {
+                      Swal.showValidationMessage(`Todos los campos son obligatorios`);
+                  }
+                  return { name: name, lastname: lastname, cedula: cedula, image: image }
+              }
+          }).then((result) => {
+              if (result.value) {
+                  enviarDatosReceptor(packageId, result.value);
+              }
+          });
+      }
+
+      function enviarDatosReceptor(packageId, data) {
+          var formData = new FormData();
+          formData.append('name', data.name);
+          formData.append('lastname', data.lastname);
+          formData.append('cedula', data.cedula);
+          formData.append('image', data.image);
+          formData.append('_token', '{{ csrf_token() }}'); // CSRF token de Laravel
+
+          $.ajax({
+              url: `/barbat/public/packages/${packageId}/save-receiver`, // Ajusta esta URL a tu ruta
+              type: 'POST',
+              data: formData,
+              contentType: false,
+              processData: false,
+              success: function(response) {
+                cambiarEstadoPaquete(packageId, 'delivered');
+            },
+              error: function(xhr, status, error) {
+                  Swal.fire('Error', 'Hubo un problema al guardar los datos del receptor.', 'error');
+              }
+          });
+      }
+
+      function cambiarEstadoPaquete(packageId, nuevoEstado) {
+        $.ajax({
+            url: `/barbat/public/packages/${packageId}/change-status`, // Asegúrate de que la URL sea correcta
+            type: 'POST',
+            data: {
+                status: nuevoEstado,
+                _token: '{{ csrf_token() }}' // Necesitas pasar el CSRF token para las solicitudes POST en Laravel
+            },
+            success: function(response) {
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'El estado del paquete ha sido actualizado.',
+                    icon: 'success'
+                }).then((result) => {
+                    if (result.isConfirmed || result.dismiss) {
+                        location.reload(); // Recarga la página luego de confirmar el SweetAlert
+                    }
+                });
+            },
+            error: function(xhr, status, error) {
+                Swal.fire('Error', 'Hubo un problema al cambiar el estado del paquete.', 'error');
+            }
+        });
+      }
+
   });
   </script>
 

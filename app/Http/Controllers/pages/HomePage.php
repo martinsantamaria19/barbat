@@ -16,6 +16,8 @@ class HomePage extends Controller
   public function index()
   {
     $user = Auth::user();
+    $companyId = $user->company; // ID de la 'company' del usuario autenticado
+
     $notifications = $user->notifications;
     // Conteo de paquetes entregados
     $deliveredCount = Package::whereHas('latestActivity', function ($query) {
@@ -62,36 +64,58 @@ class HomePage extends Controller
 
     // PARA CLIENTES
 
+    // Para paquetes entregados
     $ownDeliveredCount = Package::whereHas('latestActivity', function ($query) {
       $query->where('status', 'delivered');
     })
-      ->where('client_id', $user->company)
+      ->where(function ($query) use ($companyId) {
+        $query
+          ->whereHas('client', function ($subQuery) use ($companyId) {
+            $subQuery->where('owner', $companyId); // Paquetes de sub-clientes
+          })
+          ->orWhere('client_id', $companyId); // Paquetes propios
+      })
       ->count();
 
+    // Para paquetes en proceso
     $ownProcessingCount = Package::whereDoesntHave('activities')
       ->orWhereHas('latestActivity', function ($query) {
         $query->where('status', 'processing');
       })
-      ->where('client_id', $user->company)
+      ->where(function ($query) use ($companyId) {
+        $query
+          ->whereHas('client', function ($subQuery) use ($companyId) {
+            $subQuery->where('owner', $companyId); // Paquetes de sub-clientes
+          })
+          ->orWhere('client_id', $companyId); // Paquetes propios
+      })
       ->count();
 
+    // Para paquetes enviados
     $ownShippedCount = Package::whereHas('latestActivity', function ($query) {
       $query->where('status', 'shipped');
     })
-      ->where('client_id', $user->company)
+      ->where(function ($query) use ($companyId) {
+        $query
+          ->whereHas('client', function ($subQuery) use ($companyId) {
+            $subQuery->where('owner', $companyId); // Paquetes de sub-clientes
+          })
+          ->orWhere('client_id', $companyId); // Paquetes propios
+      })
       ->count();
 
-    $userId = Auth::id();
-
+    // Para las últimas actividades
     $ownLatestActivities = Activity::with(['package.branch', 'user'])
-    ->whereHas('package', function ($query) use ($user) {
-        // Filtrar las actividades por paquetes que pertenecen a la empresa del usuario
-        $query->where('client_id', $user->company);
-    })
-    ->latest()
-    ->take(10)
-    ->get();
-
+      ->whereHas('package', function ($query) use ($companyId) {
+        $query
+          ->whereHas('client', function ($subQuery) use ($companyId) {
+            $subQuery->where('owner', $companyId); // Actividades de paquetes de sub-clientes
+          })
+          ->orWhere('client_id', $companyId); // Actividades de paquetes propios
+      })
+      ->latest()
+      ->take(10)
+      ->get();
 
     // Pasar datos a la vista
     return view('content.pages.dashboard.pages-home', [

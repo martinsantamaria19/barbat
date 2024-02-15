@@ -7,42 +7,42 @@ use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    /**
-     * Los atributos que son asignables masivamente.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'company_name',
-        'company_address',
-        'company_phone',
-        'company_email',
-        'company_rut',
-        'company_state',
-        'company_city',
-        'client_status'
-        // No es necesario incluir 'created_at' y 'updated_at' aquí
-    ];
+  /**
+   * Los atributos que son asignables masivamente.
+   *
+   * @var array
+   */
+  protected $fillable = [
+    'company_name',
+    'company_address',
+    'company_phone',
+    'company_email',
+    'company_rut',
+    'company_state',
+    'company_city',
+    'client_status',
+    'owner',
+  ];
 
-    /**
-     * Obtiene las sucursales asociadas al cliente.
-     */
-    public function branches()
-    {
-        return $this->hasMany(Branch::class, 'branch_client');
-    }
+  public function branches()
+  {
+    return $this->hasMany(Branch::class, 'branch_client');
+  }
 
-    public function packages()
-    {
-        return $this->hasMany(Package::class);
-    }
+  public function packages()
+  {
+    return $this->hasMany(Package::class);
+  }
 
-    public function users()
-    {
-        return $this->hasMany(User::class, 'company', 'id');
-    }
+  public function users()
+  {
+    return $this->hasMany(User::class, 'company', 'id');
+  }
 
-
+  public function stock()
+  {
+    return $this->hasMany(ClientsStock::class, 'client_id', 'id');
+  }
 }

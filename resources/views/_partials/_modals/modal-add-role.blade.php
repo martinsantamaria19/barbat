@@ -11,6 +11,18 @@ $permissionNamesMap = [
     'view branches'     => 'Ver sucursales',
     'view roles'      => 'Ver roles',
     'view users'      => 'Ver usuarios',
+    'edit status'     => 'Editar estado',
+    'view own clients' => 'Ver clientes propios',
+    'view dashboard'   => 'Ver dashboard',
+    'make re-stock'    => 'Crear devoluciones',
+    'view product categories' => 'Ver categorías de productos',
+    'view packages'    => 'Ver envíos',
+    'view activities'  => 'Ver actividades',
+    'create branches'  => 'Crear sucursales',
+    'edit branches'    => 'Editar sucursales',
+    'delete branches'  => 'Eliminar sucursales',
+    'view own'         => 'Ver propios',
+    'create packages'  => 'Crear envíos',
 ];
 @endphp
 

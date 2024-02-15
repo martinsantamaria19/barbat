@@ -1,18 +1,18 @@
 @php
 $configData = Helper::appClasses();
-$userRoles = auth()->user()->roles->pluck('name'); // Obtener los roles del usuario autenticado
+$userPermissions = auth()->user()->getAllPermissions()->pluck('name'); // Obtener todos los permisos del usuario.
+$currentRouteName = Route::currentRouteName(); // Obtener el nombre de la ruta actual
 @endphp
 
-
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-
-  <!-- ! Hide app brand if navbar-full -->
+  <!-- Brand Logo & User's Data -->
   @if(!isset($navbarFull))
   <div class="app-brand demo">
     <a href="{{url('/')}}" class="app-brand-link">
       <span class="app-brand-logo demo">
-        <img src="assets\img\branding\logo.png" alt="">
+        <img src="{{ asset('assets/img/branding/logo.png') }}" alt="Brand Logo">
       </span>
+      <!-- User's Data -->
       <div class="user-data-container">
         @auth
         <h6 class="user-data-name">{{ Auth::user()->name }} {{ Auth::user()->lastname }}</h6>
@@ -21,7 +21,6 @@ $userRoles = auth()->user()->roles->pluck('name'); // Obtener los roles del usua
         @endauth
       </div>
     </a>
-
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
       <i class="bx bx-chevron-left bx-sm align-middle"></i>
     </a>
@@ -30,55 +29,43 @@ $userRoles = auth()->user()->roles->pluck('name'); // Obtener los roles del usua
 
   <div class="menu-inner-shadow"></div>
 
-  @php
-  $currentRouteName = Route::currentRouteName();
-  @endphp
-
   <ul class="menu-inner py-1">
     @foreach ($menuData[0]->menu as $menu)
       @php
-      $activeClass = '';
-      $isSubmenuActive = false;
-
-      // Verificar si el menú actual debe ser mostrado según los roles del usuario
-      $isVisible = true;
-      if (isset($menu->roles)) {
-        $isVisible = $userRoles->intersect($menu->roles)->isNotEmpty();
-      }
-
-      if ($isVisible) {
-        if ($currentRouteName === $menu->slug) {
-          $activeClass = 'active';
-        } elseif (isset($menu->submenu)) {
-          foreach ($menu->submenu as $submenu) {
-            if ($currentRouteName === $submenu->slug) {
-              $activeClass = 'active';
-              $isSubmenuActive = true;
-              break;
-            }
-          }
-        }
-      }
+      $subMenuPermissions = collect($menu->submenu ?? [])->flatMap(function ($submenu) {
+        return $submenu->permissions ?? [];
+      });
+      $menuPermissions = array_merge($menu->permissions ?? [], $subMenuPermissions->all());
+      $isVisible = empty($menuPermissions) || $userPermissions->intersect($menuPermissions)->isNotEmpty();
+      $isActive = $currentRouteName && Str::startsWith($currentRouteName, $menu->slug);
       @endphp
 
       @if ($isVisible)
-      <li class="menu-item {{ $activeClass }} {{ $isSubmenuActive ? 'open' : '' }}">
-        <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}" class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}" {{ isset($menu->target) && !empty($menu->target) ? 'target="_blank"' : '' }}>
-          @isset($menu->icon)
-          <i class="{{ $menu->icon }}"></i>
-          @endisset
-          <div>{{ isset($menu->name) ? __($menu->name) : '' }}</div>
-          @isset($menu->badge)
-          <div class="badge bg-{{ $menu->badge[0] }} rounded-pill ms-auto">{{ $menu->badge[1] }}</div>
-          @endisset
-        </a>
+        <li class="menu-item {{ $isActive ? 'active open' : '' }}">
+          <a href="{{ url($menu->url) }}" class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}">
+            <i class="{{ $menu->icon }}"></i>
+            <div>{{ $menu->name }}</div>
+          </a>
+          @if (!empty($menu->submenu))
+            <ul class="menu-sub">
+              @foreach ($menu->submenu as $submenu)
+                @php
+                $isSubmenuVisible = empty($submenu->permissions) || $userPermissions->intersect($submenu->permissions)->isNotEmpty();
+                $isSubmenuActive = $currentRouteName && Str::startsWith($currentRouteName, $submenu->slug);
+                @endphp
 
-        @isset($menu->submenu)
-          @include('layouts.sections.menu.submenu', ['menu' => $menu->submenu, 'isSubmenuActive' => $isSubmenuActive])
-        @endisset
-      </li>
+                @if ($isSubmenuVisible)
+                  <li class="menu-item {{ $isSubmenuActive ? 'active' : '' }}">
+                    <a href="{{ url($submenu->url) }}" class="menu-link">
+                      <div>{{ $submenu->name }}</div>
+                    </a>
+                  </li>
+                @endif
+              @endforeach
+            </ul>
+          @endif
+        </li>
       @endif
     @endforeach
   </ul>
-
 </aside>

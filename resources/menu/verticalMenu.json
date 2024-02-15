@@ -5,9 +5,8 @@
       "name": "Dashboard",
       "icon": "menu-icon tf-icons bx bx-home-circle",
       "slug": "pages-home",
-      "roles": [
-        "Administrador",
-        "Cliente"
+      "permissions": [
+        "view dashboard"
       ]
     },
     {
@@ -17,31 +16,41 @@
       "slug": [
         "products",
         "product-categories",
-        "add-product"
-      ],
-      "roles": [
-        "Administrador"
+        "add-product",
+        "re-stock"
       ],
       "submenu": [
         {
-          "url": "/product-categories",
-          "name": "Categorías",
-          "slug": "product-categories"
-        },
-        {
           "url": "/products",
           "name": "Todos los Productos",
-          "slug": "products"
+          "slug": "products",
+          "permissions": [
+            "view products"
+          ]
         },
         {
           "url": "/add-product",
           "name": "Crear Producto",
-          "slug": "add-product"
+          "slug": "add-product",
+          "permissions": [
+            "create products"
+          ]
+        },
+        {
+          "url": "/product-categories",
+          "name": "Categorías",
+          "slug": "product-categories",
+          "permissions": [
+            "view product categories"
+          ]
         },
         {
           "url": "/products/re-stock",
-          "name": "Agregar Stock",
-          "slug": "re-stock"
+          "name": "Devoluciones",
+          "slug": "products.re-stock",
+          "permissions": [
+            "make re-stock"
+          ]
         }
       ]
     },
@@ -54,43 +63,31 @@
         "add-package",
         "packages"
       ],
-      "roles": [
-        "Administrador"
-      ],
       "submenu": [
         {
           "url": "/packages",
           "name": "Todos los envíos",
-          "slug": "packages"
+          "slug": "packages",
+          "permissions": [
+            "view packages"
+          ]
         },
         {
           "url": "/add-package",
           "name": "Crear Envío",
-          "slug": "add-package"
+          "slug": "add-package",
+          "permissions": [
+            "create packages"
+          ]
         },
         {
           "url": "/activity",
           "name": "Ver Actividad",
-          "slug": "activity"
+          "slug": "activity",
+          "permissions": [
+            "view activity"
+          ]
         }
-      ]
-    },
-    {
-      "url": "/packages",
-      "name": "Envios",
-      "icon": "menu-icon tf-icons bx bx-package",
-      "slug": "packages",
-      "roles": [
-        "Cliente"
-      ]
-    },
-    {
-      "url": "/activity",
-      "name": "Actividad",
-      "icon": "menu-icon tf-icons bx bx-git-compare",
-      "slug": "activity",
-      "roles": [
-        "Cliente"
       ]
     },
     {
@@ -101,19 +98,22 @@
         "clients",
         "branches"
       ],
-      "roles": [
-        "Administrador"
-      ],
       "submenu": [
         {
           "url": "/clients",
           "name": "Clientes",
-          "slug": "clients"
+          "slug": "clients",
+          "permissions": [
+            "view clients"
+          ]
         },
         {
           "url": "/branches",
           "name": "Sucursales",
-          "slug": "branches"
+          "slug": "branches",
+          "permissions": [
+            "view branches"
+          ]
         }
       ]
     },
@@ -125,19 +125,22 @@
         "users",
         "roles"
       ],
-      "roles": [
-        "Administrador"
-      ],
       "submenu": [
         {
           "url": "/users",
           "name": "Usuarios",
-          "slug": "users"
+          "slug": "users",
+          "permissions": [
+            "view users"
+          ]
         },
         {
           "url": "/roles",
           "name": "Roles de Usuario",
-          "slug": "roles.index"
+          "slug": "roles.index",
+          "permissions": [
+            "view roles"
+          ]
         }
       ]
     }

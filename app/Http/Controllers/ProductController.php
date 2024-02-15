@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Client;
+use App\Models\ClientsStock;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Gate;
 
@@ -85,8 +87,11 @@ class ProductController extends Controller
     }
   }
 
-  public function reStock() {
-    return view ('content.pages.products.re-stock');
+  public function reStock()
+  {
+    $clients = Client::all();
+
+    return view('content.pages.products.re-stock', compact('clients'));
   }
 
   public function edit($id)
@@ -188,4 +193,67 @@ class ProductController extends Controller
 
     return response()->json(['error' => 'Producto no encontrado.'], 404);
   }
+
+  public function processRestock(Request $request)
+  {
+      $clientId = $request->input('client_id');
+      $branchId = $request->input('branch_id');
+      $products = $request->input('products');
+
+      DB::beginTransaction();
+
+      try {
+          foreach ($products as $productId => $quantity) {
+              if ($quantity > 0) {
+                  $clientStock = ClientsStock::where('client_id', $clientId)
+                                  ->where('branch_id', $branchId)
+                                  ->where('product_id', $productId)
+                                  ->first();
+
+                  if ($clientStock) {
+                      // Resta la cantidad devuelta del stock existente en ClientsStock
+                      $clientStock->stock -= $quantity;
+                      $clientStock->save();
+
+                      // Encuentra el producto correspondiente y suma la cantidad devuelta al stock de la empresa
+                      $product = Product::find($productId);
+                      if ($product) {
+                          $product->increment('stock', $quantity);
+                      }
+                  } else {
+                    Log::alert("message: No se encontró el stock del producto en la sucursal del cliente.");
+                  }
+              }
+          }
+
+          DB::commit();
+          return redirect()->back()->with('success', 'Devolución procesada correctamente.');
+      } catch (\Exception $e) {
+          DB::rollBack();
+          return redirect()->back()->with('error', 'Error al procesar la devolución: ' . $e->getMessage());
+      }
+  }
+
+
+
+  public function getProductsForReturn($clientId, $branchId)
+  {
+      // Asume que ClientsStock tiene relaciones 'product', 'client', y 'branch'
+      $clientsStock = ClientsStock::with('product')
+                      ->where('client_id', $clientId)
+                      ->where('branch_id', $branchId)
+                      ->get();
+
+      $products = $clientsStock->map(function ($clientStock) {
+          return [
+              'id' => $clientStock->product->id,
+              'name' => $clientStock->product->name,
+              'stock' => $clientStock->stock,
+          ];
+      });
+
+      return response()->json(['data' => $products]);
+  }
+
+
 }

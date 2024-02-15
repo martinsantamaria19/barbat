@@ -59,7 +59,7 @@
         <label class="form-label" for="company">Empresa</label>
         <select class="form-select" id="company" name="company" aria-label="Selecciona la empresa">
             <option value="" disabled selected>Selecciona la empresa</option>
-            <option value="Barbat">Barbat</option>
+            <option value="">Barbat</option>
             @foreach($clients as $client)
                 <option value="{{ $client->id }}">{{ $client->company_name }}</option>
             @endforeach
@@ -198,11 +198,12 @@
   </div>
 </div>
 
-
+@can('create users')
 <button type="button" class="btn btn-primary fixed-bottom-right" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser">
   <i class="bx bx-plus"></i>
   <span class="d-none d-sm-inline-block">Nuevo Usuario</span>
 </button>
+@endcan
 
 @else
 

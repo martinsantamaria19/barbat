@@ -12,6 +12,7 @@ use App\Models\Category;
 use App\Models\Package;
 use App\Models\Activity;
 use App\Models\Receiver;
+use App\Models\ClientsStock;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Dompdf\Dompdf;
@@ -22,6 +23,7 @@ use App\Notifications\NewOrder;
 use Illuminate\Support\Facades\Notification;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+
 
 class PackageController extends Controller
 {
@@ -97,74 +99,72 @@ class PackageController extends Controller
 
   public function store(Request $request)
   {
-    // Iniciar una transacción para asegurar la integridad de los datos
-    DB::beginTransaction();
+      // Iniciar una transacción para asegurar la integridad de los datos
+      DB::beginTransaction();
 
-    try {
-      // Crear el paquete
-      $package = new Package();
-      $package->client_id = $request->client_id;
-      $package->branch_id = $request->branch_id;
-      $package->priority = $request->priority;
-      $package->delivery_date = $request->delivery_date;
-      $package->save(); // Guardar el paquete
-      Log::info('Paquete creado con ID: ' . $package->id);
+      try {
+          // Crear el paquete
+          $package = new Package();
+          $package->client_id = $request->client_id;
+          $package->branch_id = $request->branch_id;
+          $package->priority = $request->priority;
+          $package->delivery_date = $request->delivery_date;
+          $package->save(); // Guardar el paquete
 
-      // Agregar productos al paquete y validar el stock
-      $productosCarrito = json_decode($request->input('productos_carrito'), true);
-      foreach ($productosCarrito as $producto) {
-        $product = Product::find($producto['id']);
-        if ($product) {
-          if ($product->stock < $producto['cantidad']) {
-            // Si no hay suficiente stock, detener el proceso y enviar un mensaje
-            DB::rollback();
-            return back()->with('error', 'Stock no disponible para el producto: ' . $product->name);
+          // Agregar productos al paquete y actualizar el stock
+          $productosCarrito = json_decode($request->input('productos_carrito'), true);
+          foreach ($productosCarrito as $producto) {
+              $product = Product::find($producto['id']);
+              if ($product) {
+                  $package->products()->attach($producto['id'], ['cantidad' => $producto['cantidad']]);
+
+                  // Decrementar el stock del producto en tu empresa
+                  $product->decrement('stock', $producto['cantidad']);
+
+                  // Actualizar o crear el registro en ClientsStock para incrementar el stock
+                  $clientStock = \App\Models\ClientsStock::updateOrCreate(
+                      [
+                          'client_id' => $request->client_id,
+                          'branch_id' => $request->branch_id,
+                          'product_id' => $producto['id'],
+                      ],
+                      ['stock' => DB::raw("stock + {$producto['cantidad']}")]
+                  );
+              } else {
+                  DB::rollback();
+                  return back()->with('error', 'Producto no encontrado: ' . $producto['id']);
+              }
           }
 
-          $package->products()->attach($producto['id'], ['cantidad' => $producto['cantidad']]);
-          $product->stock -= $producto['cantidad'];
-          $product->save();
-        } else {
+          // Crear una actividad asociada con el paquete
+          $activity = new Activity([
+              'package_id' => $package->id,
+              'status' => 'processing',
+              'updated_by' => Auth::id(),
+          ]);
+          $activity->save();
+
+          DB::commit();
+
+          // Enviar notificaciones
+          $usersToNotify = User::all();
+          Notification::send($usersToNotify, new NewOrder($package, 'new'));
+
+          return redirect()
+              ->route('packages')
+              ->with('success', 'Paquete creado correctamente');
+      } catch (\Exception $e) {
+          Log::error('Error en store: ' . $e->getMessage());
           DB::rollback();
-          return back()->with('error', 'Producto no encontrado: ' . $producto['id']);
-        }
+          return back()
+              ->withErrors(['error' => $e->getMessage()])
+              ->withInput();
       }
-
-      if (is_null($package->id)) {
-        Log::error('Error: El paquete no tiene ID después de guardarse.');
-        DB::rollback();
-        return back()
-          ->withErrors(['error' => 'Error al guardar el paquete.'])
-          ->withInput();
-      }
-
-      // Crear una actividad asociada con el paquete
-      $activity = new Activity([
-        'package_id' => $package->id,
-        'status' => 'processing',
-        'updated_by' => Auth::id(),
-      ]);
-      Log::info('Creando actividad para el paquete ID: ' . $package->id);
-      $activity->save();
-      Log::info('Actividad creada para el paquete ID: ' . $package->id);
-
-      DB::commit();
-
-      $usersToNotify = User::all();
-      $status = 'new';
-      Notification::send($usersToNotify, new NewOrder($package, $status));
-
-      return redirect()
-        ->route('packages')
-        ->with('success', 'Paquete creado correctamente');
-    } catch (\Exception $e) {
-      Log::error('Error en store: ' . $e->getMessage());
-      DB::rollback();
-      return back()
-        ->withErrors(['error' => $e->getMessage()])
-        ->withInput();
-    }
   }
+
+
+
+
 
   public function getBranches($client_id)
   {
@@ -349,5 +349,6 @@ class PackageController extends Controller
     // Opcionalmente, puedes devolver una respuesta JSON indicando el éxito de la operación
     return response()->json(['message' => 'Receptor asociado correctamente al paquete'], 200);
   }
+
 
 }

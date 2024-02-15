@@ -68,7 +68,10 @@
         <label for="branchClient" class="form-label">Cliente*</label>
         <select id="branchClient" name="branchClient" class="selectpicker w-100" data-style="btn-default" data-live-search="true">
             @foreach ($clients as $client)
-                <option value="{{ $client->id }}">{{ $client->company_name }}</option>
+                <!-- Asume que $allowedClients contiene los IDs de los clientes permitidos -->
+                @if(in_array($client->id, $allowedClients))
+                    <option value="{{ $client->id }}">{{ $client->company_name }}</option>
+                @endif
             @endforeach
         </select>
       </div>
