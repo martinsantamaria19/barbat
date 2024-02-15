@@ -56,7 +56,7 @@
       <div class="card-body">
         <div class="user-avatar-section">
           <div class=" d-flex align-items-center flex-column">
-            <img class="img-fluid rounded my-4" src="{{asset('assets/img/branding/logo.png')}}" height="60" width="60" alt="User avatar" />
+            <img class="img-fluid rounded my-4" src="{{asset('assets/img/branding/RB-icono.svg')}}" height="60" width="60" alt="User avatar" />
             <div class="user-info text-center">
               @auth
                 <h4 class="mb-2">{{ $user->name }} {{ $user->lastname }}</h4>

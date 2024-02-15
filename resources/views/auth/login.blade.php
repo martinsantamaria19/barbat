@@ -36,7 +36,7 @@ $customizerHidden = 'customizer-hide';
         <div class="card-body">
           <!-- Logo -->
           <div class="app-brand app-brand-login justify-content-center">
-              <img src="assets\img\branding\logo.png" alt="">
+              <img src="assets\img\branding\RB-icono.svg" class="logoLogin" alt="">
           </div>
           <!-- /Logo -->
           <h4 class="mb-4 text-center">Gestión de Envíos</h4>

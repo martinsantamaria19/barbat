@@ -25,11 +25,6 @@
 <div class="card">
   <div class="card-header">
     <h5 class="card-title">Productos</h5>
-    <div class="d-flex justify-content-between align-items-center row py-3 gap-3 gap-md-0">
-      <div class="col-md-4 product_status"></div>
-      <div class="col-md-4 product_category"></div>
-      <div class="col-md-4 product_stock"></div>
-    </div>
   </div>
   <div class="card-datatable table-responsive">
     <table id="productsTable" class="productsTable table border-top">

@@ -23,7 +23,7 @@
 <div class="d-flex align-items-center justify-content-center min-vh-100">
   <div class="card p-3 col-10 col-md-4">
     <div class="app-brand justify-content-center">
-      <img src="./assets/img/branding/logo.png" class="app-brand-logo demo" alt="">
+      <img src="./assets/img/branding/RB-icono.svg" class="app-brand-logo demo" alt="">
     </div>
     <h3 class="text-center pt-2 pb-4">Rastreo de Envío</h3>
     <h5 class="text-center mb-0"><strong>{{$package->client->company_name}} - {{$package->branch->branch_name}}</strong></h5>

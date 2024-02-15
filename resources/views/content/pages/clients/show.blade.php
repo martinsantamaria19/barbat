@@ -129,15 +129,15 @@
     <!-- Customer Pills -->
     <ul class="nav nav-pills flex-column flex-md-row mb-4">
       <li class="nav-item"><a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i>Resumen</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{url('app/ecommerce/customer/details/security')}}"><i class="bx bx-lock-alt me-1"></i>Security</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{url('app/ecommerce/customer/details/billing')}}"><i class="bx bx-detail me-1"></i>Address & Billing</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{url('app/ecommerce/customer/details/notifications')}}"><i class="bx bx-bell me-1"></i>Notifications</a></li>
     </ul>
     <!--/ Customer Pills -->
 
 
     <!-- Invoice table -->
     <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="card-title">Sucursales</h5>
+      </div>
       <div class="card-datatable table-responsive clientBranchesTable mb-3" data-client-id="{{$client->id}}">
         <table class="table datatables-client-branches border-top">
           <thead>
@@ -146,8 +146,6 @@
               <th>Dirección</th>
               <th>Teléfono</th>
               <th>Email</th>
-              <th>RUT</th>
-              <th>Departamento</th>
               <th>Ciudad</th>
             </tr>
           </thead>

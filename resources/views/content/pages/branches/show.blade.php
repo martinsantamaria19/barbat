@@ -49,7 +49,7 @@
 
 <div class="row">
   <!-- Customer-detail Sidebar -->
-  <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
+  <div class="col-xl-12 order-1 order-md-0">
     <!-- Customer-detail Card -->
     <div class="card mb-4">
       <div class="card-body">
@@ -114,36 +114,6 @@
     <!-- /Customer-detail Card -->
   </div>
   <!--/ Customer Sidebar -->
-
-
-  <!-- Customer Content -->
-  <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
-    <!-- Customer Pills -->
-    <ul class="nav nav-pills flex-column flex-md-row mb-4">
-      <li class="nav-item"><a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i>Resumen</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{url('app/ecommerce/customer/details/security')}}"><i class="bx bx-lock-alt me-1"></i>Security</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{url('app/ecommerce/customer/details/billing')}}"><i class="bx bx-detail me-1"></i>Address & Billing</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{url('app/ecommerce/customer/details/notifications')}}"><i class="bx bx-bell me-1"></i>Notifications</a></li>
-    </ul>
-    <!--/ Customer Pills -->
-
-
-    <!-- Invoice table -->
-    <div class="card mb-4">
-      <div class="card-datatable table-responsive clientBranchesTable mb-3" data-branch-id="{{$branch->id}}">
-        <table class="table datatables-client-branch-stock border-top">
-          <thead>
-            <tr>
-              <th>Producto</th>
-              <th>Stock</th>
-            </tr>
-          </thead>
-        </table>
-      </div>
-    </div>
-    <!-- /Invoice table -->
-  </div>
-  <!--/ Customer Content -->
 </div>
 
 <!-- Modal -->

@@ -10,7 +10,7 @@ $currentRouteName = Route::currentRouteName(); // Obtener el nombre de la ruta a
   <div class="app-brand demo">
     <a href="{{url('/')}}" class="app-brand-link">
       <span class="app-brand-logo demo">
-        <img src="{{ asset('assets/img/branding/logo.png') }}" alt="Brand Logo">
+        <img src="{{ asset('assets/img/branding/RB-icono.svg') }}" class="menuLogo" alt="Brand Logo">
       </span>
       <!-- User's Data -->
       <div class="user-data-container">
