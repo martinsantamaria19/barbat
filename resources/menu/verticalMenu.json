@@ -85,7 +85,7 @@
           "name": "Ver Actividad",
           "slug": "activity",
           "permissions": [
-            "view activity"
+            "view activities"
           ]
         }
       ]

@@ -38,7 +38,11 @@
           <th>Stock</th>
           <th>Precio</th>
           <th>Estado</th>
-          <th>Acciones</th>
+          @can('edit products')
+            <th>Acciones</th>
+          @elsecan('delete products')
+            <th>Acciones</th>
+          @endcan
         </tr>
       </thead>
       <tbody>

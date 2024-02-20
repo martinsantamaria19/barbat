@@ -55,11 +55,11 @@ $customizerHidden = 'customizer-hide';
             <div class="mb-3 form-password-toggle">
               <div class="d-flex justify-content-between">
                 <label class="form-label" for="login-password">Contraseña</label>
-                @if (Route::has('password.request'))
+                {{-- @if (Route::has('password.request'))
                 <a href="{{ route('password.request') }}">
                   <small>¿Olvidó su contraseña?</small>
                 </a>
-                @endif
+                @endif --}}
               </div>
               <div class="input-group input-group-merge @error('password') is-invalid @enderror">
                 <input type="password" id="login-password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />

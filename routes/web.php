@@ -89,7 +89,7 @@ Route::middleware('auth')->group(function () {
   // Branches
   Route::get('/branches', [BranchController::class, 'index'])->name('branches');
   Route::get('/branches-list', [BranchController::class, 'getBranchesList']);
-  Route::get('/get-branches/{client_id}', [PackageController::class, 'getBranches']);
+  Route::get('/clients/get-branches/{client_id}', [PackageController::class, 'getBranches']);
   Route::post('/create-branch', [BranchController::class, 'store'])->name('branch.store');
   Route::get('branches/{id}/edit', [BranchController::class, 'edit'])->name('branches.edit');
   Route::put('branches/{id}/update', [BranchController::class, 'update'])->name('branches.update');
