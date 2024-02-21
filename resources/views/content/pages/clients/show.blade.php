@@ -57,7 +57,14 @@
           <div class="d-flex align-items-center flex-column">
             <div class="customer-info text-center">
               <h2 class="mb-1">{{$client->company_name}}</h2>
+              @if($client->owner)
+              <small>ID #{{$client->id}} - Sub-Cliente de: {{ $ownerName }}</small>
+          @else
               <small>ID #{{$client->id}}</small>
+          @endif
+
+
+
             </div>
           </div>
         </div>

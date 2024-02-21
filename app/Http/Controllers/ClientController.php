@@ -28,6 +28,9 @@ class ClientController extends Controller
       ->count();
     $ownTotalBranches = Branch::where('branch_client', auth()->user()->company)->count();
 
+    // Obtener todos los clientes
+    $clients = Client::all();
+
     return view('content.pages.clients.clients', [
       'totalClients' => $totalClients,
       'activeClients' => $activeClients,
@@ -37,6 +40,7 @@ class ClientController extends Controller
       'ownActiveClients' => $ownActiveClients,
       'ownInactiveClients' => $ownInactiveClients,
       'ownTotalBranches' => $ownTotalBranches,
+      'clients' => $clients,
     ]);
   }
 
@@ -46,13 +50,18 @@ class ClientController extends Controller
     $user = auth()->user();
     Log::info('El usuario autenticado es: ', ['user_id' => $user->id, 'user_name' => $user->name]);
 
+    // Inicializa $owner como null
     $owner = null;
     Log::info('El propietario inicial es: ', ['owner' => $owner]);
 
     if ($user->company !== null) {
       // Si el usuario tiene 'company', establece 'owner' como el ID de ese 'company'
-      $owner = $user->company;
+      $owner = $user->company->id;
       Log::info('El propietario actualizado es: ', ['owner' => $owner]);
+    } else {
+      // Si el usuario no tiene 'company', obtén el valor de 'owner' del formulario
+      $owner = $request->input('owner');
+      Log::info('Propietario obtenido del formulario: ', ['owner' => $owner]);
     }
 
     // Validación y lógica de creación del cliente
@@ -84,17 +93,27 @@ class ClientController extends Controller
 
   public function show($clientId)
   {
-    $client = Client::find($clientId);
-    $totalBranches = $client->branches()->count();
-    $totalPackages = Package::where('client_id', $clientId)->count();
+    // Recupera el cliente con la relación owner cargada
+    $client = Client::with('owner')->find($clientId);
 
-    // Corrige la forma en que pasas las variables a la vista
+    // Verifica si el cliente tiene un owner y obtén su nombre si es así
+    $ownerName = null;
+    if ($client->owner) {
+        // Recupera el propietario usando el ID almacenado en $client->owner
+        $owner = Client::find($client->owner);
+        if ($owner) {
+            $ownerName = $owner->company_name;
+        }
+    }
+
     return view('content.pages.clients.show', [
-      'client' => $client,
-      'totalBranches' => $totalBranches,
-      'totalPackages' => $totalPackages,
+        'client' => $client,
+        'totalBranches' => $client->branches()->count(),
+        'totalPackages' => Package::where('client_id', $clientId)->count(),
+        'ownerName' => $ownerName,
     ]);
   }
+
 
   public function edit($clientId)
   {

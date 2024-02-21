@@ -147,19 +147,43 @@
       @csrf <!-- Token CSRF para seguridad en Laravel -->
       <div class="mb-3">
         <label class="form-label" for="companyName">Nombre de la Empresa</label>
-        <input type="text" class="form-control" id="companyName" placeholder="Introduce el nombre de la empresa" name="companyName" aria-label="Introduce el nombre de la empresa" />
+        <input type="text" class="form-control" id="companyName" placeholder="Introduce el nombre de la empresa" name="companyName" aria-label="Introduce el nombre de la empresa" required/>
       </div>
+
+      <div class="mb-3">
+        <label class="switch">
+            <span class="switch-label">Sub-Cliente</span>
+            <input type="checkbox" class="switch-input" id="subCliente" />
+            <span class="switch-toggle-slider">
+                <span class="switch-on"></span>
+                <span class="switch-off"></span>
+            </span>
+        </label>
+      </div>
+
+      <div class="mb-3" id="listaClientes" style="display: none;">
+        <label for="clienteSelect" class="form-label">¿A quién pertenece?</label>
+        <select class="form-select" id="clienteSelect" name="owner">
+            <!-- Iterar sobre la colección de clientes y mostrar cada cliente como una opción en el select -->
+            @foreach($clients as $client)
+                <option value="{{ $client->id }}">{{ $client->company_name }}</option>
+            @endforeach
+        </select>
+      </div>
+
+
+
       <div class="mb-3">
         <label class="form-label" for="companyAddress">Dirección</label>
-        <input type="text" class="form-control" id="companyAddress" placeholder="Introduce la dirección" name="companyAddress" aria-label="Introduce la dirección" />
+        <input type="text" class="form-control" id="companyAddress" placeholder="Introduce la dirección" name="companyAddress" aria-label="Introduce la dirección" required/>
       </div>
       <div class="mb-3">
         <label class="form-label" for="companyPhone">Teléfono</label>
-        <input type="text" id="companyPhone" class="form-control" placeholder="Ej: 099123456" name="companyPhone" />
+        <input type="text" id="companyPhone" class="form-control" placeholder="Ej: 099123456" name="companyPhone" required/>
       </div>
       <div class="mb-3">
         <label class="form-label" for="companyEmail">Email</label>
-        <input type="text" class="form-control" id="companyEmail" placeholder="Ej: empresa@empresa.com" name="companyEmail" aria-label="Introduce la dirección de correo electrónico" />
+        <input type="text" class="form-control" id="companyEmail" placeholder="Ej: empresa@empresa.com" name="companyEmail" aria-label="Introduce la dirección de correo electrónico" required/>
       </div>
       <div class="mb-3">
         <label class="form-label" for="companyRut">RUT</label>
@@ -167,11 +191,11 @@
       </div>
       <div class="mb-3">
         <label class="form-label" for="companyState">Departamento</label>
-        <input type="text" class="form-control" id="companyState" placeholder="Ej: Montevideo" name="companyState" aria-label="Introduce el departamento" />
+        <input type="text" class="form-control" id="companyState" placeholder="Ej: Montevideo" name="companyState" aria-label="Introduce el departamento" required/>
       </div>
       <div class="mb-3">
         <label class="form-label" for="companyCity">Localidad</label>
-        <input type="text" class="form-control" id="companyCity" placeholder="Ej: Centro" name="companyCity" aria-label="John Doe" />
+        <input type="text" class="form-control" id="companyCity" placeholder="Ej: Centro" name="companyCity" aria-label="John Doe" required/>
       </div>
       <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Crear Cliente</button>
       <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancelar</button>
@@ -384,19 +408,39 @@
       @csrf <!-- Token CSRF para seguridad en Laravel -->
       <div class="mb-3">
         <label class="form-label" for="companyName">Nombre de la Empresa</label>
-        <input type="text" class="form-control" id="companyName" placeholder="Introduce el nombre de la empresa" name="companyName" aria-label="Introduce el nombre de la empresa" />
+        <input type="text" class="form-control" id="companyName" placeholder="Introduce el nombre de la empresa" name="companyName" aria-label="Introduce el nombre de la empresa" required />
+      </div>
+      <div class="mb-3">
+        <label class="switch">
+            <span class="switch-label">Sub-Cliente</span>
+            <input type="checkbox" class="switch-input" id="subCliente" />
+            <span class="switch-toggle-slider">
+                <span class="switch-on"></span>
+                <span class="switch-off"></span>
+            </span>
+        </label>
+      </div>
+
+      <div class="mb-3" id="listaClientes" style="display: none;">
+        <label for="clienteSelect" class="form-label">¿A quién pertenece?</label>
+        <select class="form-select" id="clienteSelect" name="owner">
+            <!-- Iterar sobre la colección de clientes y mostrar cada cliente como una opción en el select -->
+            @foreach($clients as $client)
+                <option value="{{ $client->id }}">{{ $client->company_name }}</option>
+            @endforeach
+        </select>
       </div>
       <div class="mb-3">
         <label class="form-label" for="companyAddress">Dirección</label>
-        <input type="text" class="form-control" id="companyAddress" placeholder="Introduce la dirección" name="companyAddress" aria-label="Introduce la dirección" />
+        <input type="text" class="form-control" id="companyAddress" placeholder="Introduce la dirección" name="companyAddress" aria-label="Introduce la dirección" required/>
       </div>
       <div class="mb-3">
         <label class="form-label" for="companyPhone">Teléfono</label>
-        <input type="text" id="companyPhone" class="form-control" placeholder="Ej: 099123456" name="companyPhone" />
+        <input type="text" id="companyPhone" class="form-control" placeholder="Ej: 099123456" name="companyPhone" required/>
       </div>
       <div class="mb-3">
         <label class="form-label" for="companyEmail">Email</label>
-        <input type="text" class="form-control" id="companyEmail" placeholder="Ej: empresa@empresa.com" name="companyEmail" aria-label="Introduce la dirección de correo electrónico" />
+        <input type="text" class="form-control" id="companyEmail" placeholder="Ej: empresa@empresa.com" name="companyEmail" aria-label="Introduce la dirección de correo electrónico" required/>
       </div>
       <div class="mb-3">
         <label class="form-label" for="companyRut">RUT</label>
@@ -404,11 +448,11 @@
       </div>
       <div class="mb-3">
         <label class="form-label" for="companyState">Departamento</label>
-        <input type="text" class="form-control" id="companyState" placeholder="Ej: Montevideo" name="companyState" aria-label="Introduce el departamento" />
+        <input type="text" class="form-control" id="companyState" placeholder="Ej: Montevideo" name="companyState" aria-label="Introduce el departamento" required/>
       </div>
       <div class="mb-3">
         <label class="form-label" for="companyCity">Localidad</label>
-        <input type="text" class="form-control" id="companyCity" placeholder="Ej: Centro" name="companyCity" aria-label="John Doe" />
+        <input type="text" class="form-control" id="companyCity" placeholder="Ej: Centro" name="companyCity" aria-label="John Doe" required/>
       </div>
       <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Crear Cliente</button>
       <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancelar</button>
@@ -523,3 +567,19 @@
 @endcan
 
 @endsection
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const subClienteSwitch = document.getElementById('subCliente');
+      const listaClientes = document.getElementById('listaClientes');
+
+      subClienteSwitch.addEventListener('change', function() {
+          if (this.checked) {
+              listaClientes.style.display = 'block';
+          } else {
+              listaClientes.style.display = 'none';
+          }
+      });
+  });
+</script>

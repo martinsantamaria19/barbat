@@ -45,4 +45,10 @@ class Client extends Model
   {
     return $this->hasMany(ClientsStock::class, 'client_id', 'id');
   }
+
+  public function owner()
+  {
+      return $this->belongsTo(Client::class, 'owner');
+  }
+
 }
